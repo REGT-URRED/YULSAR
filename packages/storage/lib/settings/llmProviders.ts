@@ -67,6 +67,7 @@ export function getProviderTypeByProviderId(providerId: string): ProviderTypeEnu
     case ProviderTypeEnum.OpenRouter:
     case ProviderTypeEnum.Groq:
     case ProviderTypeEnum.Cerebras:
+    case ProviderTypeEnum.Bynara:
       return providerId;
     default:
       return ProviderTypeEnum.CustomOpenAI;
@@ -97,6 +98,8 @@ export function getDefaultDisplayNameFromProviderId(providerId: string): string 
       return 'Groq';
     case ProviderTypeEnum.Cerebras:
       return 'Cerebras';
+    case ProviderTypeEnum.Bynara:
+      return 'Bynara';
     case ProviderTypeEnum.Llama:
       return 'Llama';
     default:
@@ -116,6 +119,7 @@ export function getDefaultProviderConfig(providerId: string): ProviderConfig {
     case ProviderTypeEnum.Groq: // Groq uses modelNames
     case ProviderTypeEnum.Cerebras: // Cerebras uses modelNames
     case ProviderTypeEnum.Llama: // Llama uses modelNames
+    case ProviderTypeEnum.Bynara: // Bynara uses modelNames
       return {
         apiKey: '',
         name: getDefaultDisplayNameFromProviderId(providerId),
@@ -125,7 +129,9 @@ export function getDefaultProviderConfig(providerId: string): ProviderConfig {
             ? 'https://openrouter.ai/api/v1'
             : providerId === ProviderTypeEnum.Llama
               ? 'https://api.llama.com/v1'
-              : undefined,
+              : providerId === ProviderTypeEnum.Bynara
+                ? ''
+                : undefined,
         modelNames: [...(llmProviderModelNames[providerId] || [])],
         createdAt: Date.now(),
       };

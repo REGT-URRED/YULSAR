@@ -19,6 +19,7 @@ import {
   getDefaultDisplayNameFromProviderId,
   getDefaultProviderConfig,
   getDefaultAgentModelParams,
+  fetchModels,
   type ProviderConfig,
 } from '@extension/storage';
 import { t } from '@extension/i18n';
@@ -79,6 +80,8 @@ export const ModelSettings = ({ isDarkMode = false }: ModelSettingsProps) => {
   });
   const [newModelInputs, setNewModelInputs] = useState<Record<string, string>>({});
   const [isProviderSelectorOpen, setIsProviderSelectorOpen] = useState(false);
+  const [fetchingProvider, setFetchingProvider] = useState<string | null>(null);
+  const [fetchErrors, setFetchErrors] = useState<Record<string, string>>({});
   const newlyAddedProviderRef = useRef<string | null>(null);
   const [nameErrors, setNameErrors] = useState<Record<string, string>>({});
   // Add state for tracking API key visibility
@@ -304,6 +307,38 @@ export const ModelSettings = ({ isDarkMode = false }: ModelSettingsProps) => {
     }));
   };
 
+  const handleFetchModels = async (providerId: string) => {
+    const config = providers[providerId];
+    if (!config?.apiKey) return;
+
+    setFetchingProvider(providerId);
+    setFetchErrors(prev => {
+      const next = { ...prev };
+      delete next[providerId];
+      return next;
+    });
+
+    try {
+      const result = await fetchModels(config.type!, config.apiKey, config.baseUrl);
+      if (result.error) {
+        setFetchErrors(prev => ({ ...prev, [providerId]: result.error }));
+        return;
+      }
+      // ponytail: replace modelNames in provider with fetched list
+      setModifiedProviders(prev => new Set(prev).add(providerId));
+      await llmProviderStore.setProvider(providerId, {
+        ...config,
+        modelNames: result.models,
+      });
+      setProviders(prev => ({
+        ...prev,
+        [providerId]: { ...prev[providerId], modelNames: result.models },
+      }));
+    } finally {
+      setFetchingProvider(null);
+    }
+  };
+
   const addModel = (provider: string, model: string) => {
     if (!model.trim()) return;
 
@@ -412,6 +447,9 @@ export const ModelSettings = ({ isDarkMode = false }: ModelSettingsProps) => {
     } else if (providerType === ProviderTypeEnum.Llama) {
       // Llama needs API Key and Base URL
       hasInput = Boolean(config?.apiKey?.trim()) && Boolean(config?.baseUrl?.trim());
+    } else if (providerType === ProviderTypeEnum.Bynara) {
+      // Bynara needs API Key and Base URL
+      hasInput = Boolean(config?.apiKey?.trim()) && Boolean(config?.baseUrl?.trim());
     } else {
       // Other built-in providers just need API Key
       hasInput = Boolean(config?.apiKey?.trim());
@@ -443,7 +481,8 @@ export const ModelSettings = ({ isDarkMode = false }: ModelSettingsProps) => {
           providers[provider].type === ProviderTypeEnum.Ollama ||
           providers[provider].type === ProviderTypeEnum.AzureOpenAI ||
           providers[provider].type === ProviderTypeEnum.OpenRouter ||
-          providers[provider].type === ProviderTypeEnum.Llama) &&
+          providers[provider].type === ProviderTypeEnum.Llama ||
+          providers[provider].type === ProviderTypeEnum.Bynara) &&
         (!providers[provider].baseUrl || !providers[provider].baseUrl.trim())
       ) {
         alert(t('options_models_providers_errors_baseUrlRequired', getDefaultDisplayNameFromProviderId(provider)));
@@ -839,8 +878,8 @@ export const ModelSettings = ({ isDarkMode = false }: ModelSettingsProps) => {
             </div>
           )}
 
-        {/* Reasoning Effort Selector (only for O-series models) */}
-        {selectedModels[agentName] && isOpenAIReasoningModel(selectedModels[agentName]) && (
+        {/* Reasoning Effort Selector */}
+        {selectedModels[agentName] && (
           <div className="flex items-center">
             <label
               htmlFor={`${agentName}-reasoning-effort`}
@@ -1314,7 +1353,8 @@ export const ModelSettings = ({ isDarkMode = false }: ModelSettingsProps) => {
                       providerConfig.type === ProviderTypeEnum.Ollama ||
                       providerConfig.type === ProviderTypeEnum.AzureOpenAI ||
                       providerConfig.type === ProviderTypeEnum.OpenRouter ||
-                      providerConfig.type === ProviderTypeEnum.Llama) && (
+                      providerConfig.type === ProviderTypeEnum.Llama ||
+                      providerConfig.type === ProviderTypeEnum.Bynara) && (
                       <div className="flex flex-col">
                         <div className="flex items-center">
                           <label
@@ -1343,7 +1383,9 @@ export const ModelSettings = ({ isDarkMode = false }: ModelSettingsProps) => {
                                     ? t('options_models_providers_placeholders_baseUrl_openrouter')
                                     : providerConfig.type === ProviderTypeEnum.Llama
                                       ? t('options_models_providers_placeholders_baseUrl_llama')
-                                      : t('options_models_providers_placeholders_baseUrl_ollama')
+                                      : providerConfig.type === ProviderTypeEnum.Bynara
+                                        ? 'https://tu-bynara-router/v1'
+                                        : t('options_models_providers_placeholders_baseUrl_ollama')
                             }
                             value={providerConfig.baseUrl || ''}
                             onChange={e => handleApiKeyChange(providerId, providerConfig.apiKey || '', e.target.value)}
@@ -1516,6 +1558,26 @@ export const ModelSettings = ({ isDarkMode = false }: ModelSettingsProps) => {
                               <p className={`mt-1 text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                                 {t('options_models_providers_models_instructions')}
                               </p>
+                              <div className="mt-2 flex items-center gap-2">
+                                <button
+                                  type="button"
+                                  onClick={() => handleFetchModels(providerId)}
+                                  disabled={fetchingProvider === providerId || !providerConfig.apiKey?.trim()}
+                                  className={`rounded px-3 py-1 text-xs font-medium transition-colors ${
+                                    fetchingProvider === providerId
+                                      ? 'cursor-wait bg-slate-500 text-white'
+                                      : !providerConfig.apiKey?.trim()
+                                        ? 'cursor-not-allowed bg-gray-300 text-gray-500'
+                                        : isDarkMode
+                                          ? 'bg-blue-700 text-white hover:bg-blue-600'
+                                          : 'bg-blue-500 text-white hover:bg-blue-600'
+                                  }`}>
+                                  {fetchingProvider === providerId ? 'Cargando...' : 'Obtener modelos'}
+                                </button>
+                                {fetchErrors[providerId] && (
+                                  <span className="text-xs text-red-500">{fetchErrors[providerId]}</span>
+                                )}
+                              </div>
                             </>
                           )}
                           {/* === END: Conditional UI === */}

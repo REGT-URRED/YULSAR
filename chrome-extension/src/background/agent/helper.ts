@@ -272,21 +272,55 @@ export function createChatModel(providerConfig: ProviderConfig, modelConfig: Mod
       return new ChatAnthropic(args);
     }
     case ProviderTypeEnum.DeepSeek: {
-      const args = {
+      const args: {
+        model: string;
+        apiKey: string;
+        temperature: number;
+        topP: number;
+        modelKwargs?: Record<string, unknown>;
+      } = {
         model: modelConfig.modelName,
         apiKey: providerConfig.apiKey,
         temperature,
         topP,
       };
+      // ponytail: reasoningEffort → DeepSeek thinking mode (on for medium/high, off otherwise)
+      if (modelConfig.reasoningEffort) {
+        const thinkingEnabled = modelConfig.reasoningEffort === 'medium' || modelConfig.reasoningEffort === 'high';
+        args.modelKwargs = {
+          // DeepSeek passes extra_body.thinking to control reasoning/thinking mode
+          extra_body: {
+            thinking: { type: thinkingEnabled ? 'enabled' : 'disabled' },
+          },
+        };
+      }
       return new ChatDeepSeek(args) as BaseChatModel;
     }
     case ProviderTypeEnum.Gemini: {
-      const args = {
+      const args: {
+        model: string;
+        apiKey: string;
+        temperature: number;
+        topP: number;
+        thinkingConfig?: Record<string, unknown>;
+      } = {
         model: modelConfig.modelName,
         apiKey: providerConfig.apiKey,
         temperature,
         topP,
       };
+      // ponytail: reasoningEffort → Gemini thinkingBudget in tokens
+      if (modelConfig.reasoningEffort) {
+        const budgetMap: Record<string, number> = {
+          minimal: 0,
+          low: 512,
+          medium: 2048,
+          high: 8192,
+        };
+        args.thinkingConfig = {
+          thinkingBudget: budgetMap[modelConfig.reasoningEffort] ?? 0,
+        };
+      }
       return new ChatGoogleGenerativeAI(args);
     }
     case ProviderTypeEnum.Grok: {
@@ -380,6 +414,10 @@ export function createChatModel(providerConfig: ProviderConfig, modelConfig: Mod
       args.configuration = configuration;
 
       return new ChatLlama(args);
+    }
+    case ProviderTypeEnum.Bynara: {
+      // Bynara router — OpenAI-compatible, passes through with custom baseUrl
+      return createOpenAIChatModel(providerConfig, modelConfig, undefined);
     }
     default: {
       // by default, we think it's a openai-compatible provider
