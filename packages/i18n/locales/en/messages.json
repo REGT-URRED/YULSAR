@@ -1,11 +1,11 @@
 {
   "app_metadata_description": {
     "description": "Extension description",
-    "message": "Automate web tasks with AI! NanoBrowser is an open-source browser extension that lets you extract data, fill forms, and more."
+    "message": "Asistente de navegador con IA. Indica tareas y el agente las ejecuta en tiempo real."
   },
   "app_metadata_name": {
     "description": "Extension name",
-    "message": "Nanobrowser: AI Web Agent & Automation"
+    "message": "YULSAR"
   },
   "errors_unknown": {
     "message": "Unknown error occurred"

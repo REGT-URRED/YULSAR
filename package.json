@@ -1,11 +1,12 @@
 {
-  "name": "nanobrowser",
-  "version": "0.1.13",
-  "description": "AI web automation tool",
+  "name": "yulsar",
+  "version": "0.1.0",
+  "description": "Asistente de navegador con IA. Tareas en lenguaje natural, ejecucion en tiempo real.",
   "license": "Apache-2.0",
+  "author": "",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nanobrowser/nanobrowser.git"
+    "url": "https://github.com/REGT-URRED/YULSAR.git"
   },
   "type": "module",
   "scripts": {
