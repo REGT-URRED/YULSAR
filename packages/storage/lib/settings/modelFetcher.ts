@@ -1,5 +1,27 @@
 import { ProviderTypeEnum } from './types';
 
+// ponytail: known default base URLs for built-in providers — fetch works with just API key
+function getDefaultBaseUrl(type: ProviderTypeEnum): string {
+  switch (type) {
+    case ProviderTypeEnum.OpenAI:
+      return 'https://api.openai.com/v1';
+    case ProviderTypeEnum.DeepSeek:
+      return 'https://api.deepseek.com/v1';
+    case ProviderTypeEnum.Groq:
+      return 'https://api.groq.com/openai/v1';
+    case ProviderTypeEnum.Cerebras:
+      return 'https://api.cerebras.ai/v1';
+    case ProviderTypeEnum.Grok:
+      return 'https://api.x.ai/v1';
+    case ProviderTypeEnum.OpenRouter:
+      return 'https://openrouter.ai/api/v1';
+    case ProviderTypeEnum.Llama:
+      return 'https://api.llama.com/v1';
+    default:
+      return '';
+  }
+}
+
 export interface FetchedModelsResult {
   models: string[];
   error?: string;
@@ -17,6 +39,9 @@ export async function fetchModels(
     return { models: [], error: 'API key requerida' };
   }
 
+  // ponytail: resolve default baseUrl if none provided — enables auto-detect with just API key
+  const resolvedUrl = baseUrl?.trim() || getDefaultBaseUrl(providerType);
+
   switch (providerType) {
     case ProviderTypeEnum.OpenAI:
     case ProviderTypeEnum.DeepSeek:
@@ -27,22 +52,21 @@ export async function fetchModels(
     case ProviderTypeEnum.CustomOpenAI:
     case ProviderTypeEnum.OpenRouter:
     case ProviderTypeEnum.Llama:
-      return fetchOpenAICompatible(apiKey, baseUrl, providerType);
+      return fetchOpenAICompatible(apiKey, resolvedUrl);
     case ProviderTypeEnum.Gemini:
       return fetchGemini(apiKey);
     case ProviderTypeEnum.Ollama:
-      return fetchOllama(baseUrl);
+      return fetchOllama(resolvedUrl);
     case ProviderTypeEnum.Anthropic:
       return fetchAnthropic(apiKey);
     default:
-      return fetchOpenAICompatible(apiKey, baseUrl, providerType);
+      return fetchOpenAICompatible(apiKey, resolvedUrl);
   }
 }
 
 async function fetchOpenAICompatible(
   apiKey: string,
   baseUrl?: string,
-  _providerType?: string,
 ): Promise<FetchedModelsResult> {
   const resolvedBase = sanitizeBaseUrl(baseUrl);
   if (!resolvedBase) {

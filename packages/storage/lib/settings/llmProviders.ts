@@ -135,9 +135,19 @@ export function getDefaultProviderConfig(providerId: string): ProviderConfig {
             ? 'https://openrouter.ai/api/v1'
             : providerId === ProviderTypeEnum.Llama
               ? 'https://api.llama.com/v1'
-              : providerId === ProviderTypeEnum.Bynara
-                ? ''
-                : undefined,
+              : providerId === ProviderTypeEnum.DeepSeek
+                ? 'https://api.deepseek.com/v1'
+                : providerId === ProviderTypeEnum.Groq
+                  ? 'https://api.groq.com/openai/v1'
+                  : providerId === ProviderTypeEnum.Cerebras
+                    ? 'https://api.cerebras.ai/v1'
+                    : providerId === ProviderTypeEnum.Grok
+                      ? 'https://api.x.ai/v1'
+                      : providerId === ProviderTypeEnum.OpenAI
+                        ? 'https://api.openai.com/v1'
+                        : providerId === ProviderTypeEnum.Bynara
+                          ? ''
+                          : undefined,
         modelNames: [...(llmProviderModelNames[providerId] || [])],
         createdAt: Date.now(),
       };
