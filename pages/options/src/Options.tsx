@@ -21,20 +21,7 @@ const TABS: { id: TabTypes; icon: React.ComponentType<{ className?: string }>; l
 
 const Options = () => {
   const [activeTab, setActiveTab] = useState<TabTypes>('models');
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  // Check for dark mode preference
-  useEffect(() => {
-    const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    setIsDarkMode(darkModeMediaQuery.matches);
-
-    const handleChange = (e: MediaQueryListEvent) => {
-      setIsDarkMode(e.matches);
-    };
-
-    darkModeMediaQuery.addEventListener('change', handleChange);
-    return () => darkModeMediaQuery.removeEventListener('change', handleChange);
-  }, []);
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
   const handleTabClick = (tabId: TabTypes) => {
     if (tabId === 'help') {

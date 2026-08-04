@@ -1,0 +1,971 @@
+{
+  "app_metadata_description": {
+    "description": "Extension description",
+    "message": "Asistente de navegador con IA. Indica tareas y el agente las ejecuta en tiempo real."
+  },
+  "app_metadata_name": {
+    "description": "Extension name",
+    "message": "YULSAR"
+  },
+  "errors_unknown": {
+    "message": "Ocurrió un error desconocido"
+  },
+  "errors_conn_serviceWorker": {
+    "message": "No se pudo conectar con el service worker"
+  },
+  "errors_cmd_unknown": {
+    "message": "Comando no soportado: $COMMAND$.\n\nComandos disponibles: /state, /nohighlight, /replay <historySessionId>",
+    "placeholders": {
+      "command": {
+        "content": "$1",
+        "example": "/unknown"
+      }
+    }
+  },
+  "nav_newChat_a11y": {
+    "message": "Nuevo chat"
+  },
+  "nav_loadHistory_a11y": {
+    "message": "Cargar historial"
+  },
+  "nav_settings_a11y": {
+    "message": "Configuración"
+  },
+  "nav_back": {
+    "message": "← Volver"
+  },
+  "nav_back_a11y": {
+    "message": "Volver al chat"
+  },
+  "welcome_title": {
+    "message": "Bienvenido a YULSAR!"
+  },
+  "welcome_instruction": {
+    "message": "Para comenzar, configura tus API keys en la página de configuración."
+  },
+  "welcome_openSettings": {
+    "message": "Abrir configuración"
+  },
+  "welcome_quickStart": {
+    "message": "Guía de inicio rápido"
+  },
+  "welcome_joinCommunity": {
+    "message": "Únete a la comunidad"
+  },
+  "status_checkingConfig": {
+    "message": "Comprobando configuración..."
+  },
+  "chat_buttons_stop": {
+    "message": "Detener"
+  },
+  "chat_buttons_replay": {
+    "message": "Reproducir"
+  },
+  "chat_buttons_send": {
+    "message": "Enviar"
+  },
+  "chat_input_placeholder": {
+    "message": "¿En qué puedo ayudarte?"
+  },
+  "chat_input_form": {
+    "message": "Formulario de entrada de chat"
+  },
+  "chat_input_editor": {
+    "message": "Entrada de mensaje"
+  },
+  "chat_history_title": {
+    "message": "Historial de chat"
+  },
+  "chat_history_empty": {
+    "message": "No hay historial disponible"
+  },
+  "chat_history_bookmark": {
+    "message": "Marcar sesión"
+  },
+  "chat_history_delete": {
+    "message": "Eliminar sesión"
+  },
+  "chat_bookmarks_header": {
+    "message": "Inicio rápido"
+  },
+  "chat_bookmarks_saveEdit": {
+    "message": "Guardar cambios"
+  },
+  "chat_bookmarks_cancelEdit": {
+    "message": "Cancelar cambios"
+  },
+  "chat_bookmarks_edit": {
+    "message": "Editar título del marcador"
+  },
+  "chat_bookmarks_delete": {
+    "message": "Eliminar marcador"
+  },
+  "chat_replay_starting": {
+    "message": "Iniciando reproducción de la tarea:\n\n\"$TASK$\"",
+    "placeholders": {
+      "task": {
+        "content": "$1",
+        "example": "Navigate to example.com"
+      }
+    }
+  },
+  "chat_replay_failed": {
+    "message": "Reproducción fallida: $ERROR_MESSAGE$",
+    "placeholders": {
+      "error_message": {
+        "content": "$1",
+        "example": "Connection timeout"
+      }
+    }
+  },
+  "chat_replay_invalidArgs": {
+    "message": "Argumentos inválidos. Usa el formato: /replay <historySessionId>"
+  },
+  "chat_replay_disabled": {
+    "message": "La reproducción está desactivada en la configuración general. Habilita \"Reproducir tareas históricas\" en la configuración de la extensión."
+  },
+  "chat_replay_noHistory": {
+    "message": "No se encontró historial de acciones para la sesión \"$SESSION_ID$...\". La sesión puede no contener acciones reproducibles.\n\nEs una sesión de reproducción en sí misma (las sesiones de reproducción no se pueden reproducir de nuevo), o fue creada antes de que la función de reproducción estuviera disponible.",
+    "placeholders": {
+      "session_id": {
+        "content": "$1",
+        "example": "abc123def456789"
+      }
+    }
+  },
+  "chat_stt_processing": {
+    "message": "Procesando voz..."
+  },
+  "chat_stt_recording_stop": {
+    "message": "Detener grabación"
+  },
+  "chat_stt_input_start": {
+    "message": "Iniciar entrada por voz"
+  },
+  "chat_stt_processingFailed": {
+    "message": "No se pudo procesar la grabación de voz"
+  },
+  "chat_stt_model_notFound": {
+    "message": "No hay un modelo de voz-a-texto configurado o no es un modelo de Gemini. Configura un modelo de Gemini en la configuración."
+  },
+  "chat_stt_recognitionFailed": {
+    "message": "El reconocimiento de voz falló"
+  },
+  "chat_stt_microphone_permissionDenied": {
+    "message": "Acceso al micrófono denegado. Habilita los permisos del micrófono en la configuración del navegador."
+  },
+  "chat_stt_microphone_accessFailed": {
+    "message": "No se pudo acceder al micrófono. "
+  },
+  "chat_stt_microphone_grantPermission": {
+    "message": "Por favor, concede el permiso del micrófono."
+  },
+  "chat_stt_microphone_notFound": {
+    "message": "No se encontró ningún micrófono."
+  },
+  "permissions_microphone_title": {
+    "message": "Habilitar entrada por voz"
+  },
+  "permissions_microphone_description": {
+    "message": "YULSAR necesita acceso al micrófono para convertir tu voz en texto."
+  },
+  "permissions_microphone_grantButton": {
+    "message": "Conceder permiso del micrófono"
+  },
+  "permissions_microphone_requesting": {
+    "message": "Solicitando permiso del micrófono..."
+  },
+  "permissions_microphone_grantedSuccess": {
+    "message": "¡Permiso del micrófono concedido! Ya puedes usar la entrada por voz."
+  },
+  "permissions_microphone_grantedButton": {
+    "message": "Permiso concedido"
+  },
+  "permissions_microphone_denied": {
+    "message": "Permiso denegado. "
+  },
+  "permissions_microphone_allowHelp": {
+    "message": "Haz clic en \"Permitir\" cuando se solicite acceso al micrófono."
+  },
+  "permissions_microphone_notFound": {
+    "message": "No se encontró ningún micrófono. Revisa tus dispositivos de audio."
+  },
+  "permissions_microphone_alreadyGranted": {
+    "message": "¡El permiso del micrófono ya está concedido!"
+  },
+  "permissions_microphone_alreadyGrantedButton": {
+    "message": "Permiso ya concedido"
+  },
+  "options_nav_header": {
+    "message": "Configuración"
+  },
+  "options_tabs_general": {
+    "message": "General"
+  },
+  "options_tabs_models": {
+    "message": "Modelos"
+  },
+  "options_tabs_firewall": {
+    "message": "Firewall"
+  },
+  "options_tabs_help": {
+    "message": "Ayuda"
+  },
+  "options_general_header": {
+    "message": "General"
+  },
+  "options_general_maxSteps": {
+    "message": "Pasos máximos por tarea"
+  },
+  "options_general_maxSteps_desc": {
+    "message": "Límite de pasos por tarea"
+  },
+  "options_general_maxActions": {
+    "message": "Acciones máximas por paso"
+  },
+  "options_general_maxActions_desc": {
+    "message": "Límite de acciones por paso"
+  },
+  "options_general_maxFailures": {
+    "message": "Tolerancia a fallos"
+  },
+  "options_general_maxFailures_desc": {
+    "message": "Cuántos fallos consecutivos antes de detenerse"
+  },
+  "options_general_enableVision": {
+    "message": "Habilitar visión"
+  },
+  "options_general_enableVision_desc": {
+    "message": "Usa la capacidad de visión de los LLM (consume más tokens para mejores resultados)"
+  },
+  "options_general_displayHighlights": {
+    "message": "Mostrar resaltados"
+  },
+  "options_general_displayHighlights_desc": {
+    "message": "Mostrar resaltados visuales en elementos interactivos (botones, enlaces, etc.)"
+  },
+  "options_general_planningInterval": {
+    "message": "Frecuencia de replanificación"
+  },
+  "options_general_planningInterval_desc": {
+    "message": "Reconsidera y actualiza el plan cada [Número] pasos"
+  },
+  "options_general_minWaitPageLoad": {
+    "message": "Tiempo de espera de carga de página"
+  },
+  "options_general_minWaitPageLoad_desc": {
+    "message": "Tiempo mínimo de espera después de cargar la página (250-5000ms)"
+  },
+  "options_general_replayHistoricalTasks": {
+    "message": "Reproducir tareas históricas (experimental)"
+  },
+  "options_general_replayHistoricalTasks_desc": {
+    "message": "Habilita el almacenamiento y reproducción del historial de pasos del agente (experimental, puede tener problemas)"
+  },
+
+  "options_models_providers_header": {
+    "message": "Proveedores LLM"
+  },
+  "options_models_providers_notConfigured": {
+    "message": "Aún no hay proveedores configurados. Añade un proveedor para comenzar."
+  },
+  "options_models_providers_btnCancel": {
+    "message": "Cancelar"
+  },
+  "options_models_providers_btnSave": {
+    "message": "Guardar"
+  },
+  "options_models_providers_btnDelete": {
+    "message": "Eliminar"
+  },
+  "options_models_providers_setupInstructions": {
+    "message": "Introduce tu API key y haz clic en Guardar para configurarlo."
+  },
+  "options_models_providers_custom_name": {
+    "message": "Nombre"
+  },
+  "options_models_providers_custom_name_desc": {
+    "message": "Nombre del proveedor (no se permiten espacios al guardar)"
+  },
+  "options_models_providers_custom_name_placeholder": {
+    "message": "Nombre del proveedor"
+  },
+
+  "options_models_providers_apiKey": {
+    "message": "API Key"
+  },
+  "options_models_providers_apiKey_placeholder_optional": {
+    "message": "API Key (opcional)"
+  },
+  "options_models_providers_apiKey_placeholder_required": {
+    "message": "API Key (obligatoria)"
+  },
+  "options_models_providers_apiKey_placeholder_ollama": {
+    "message": "API Key (déjala vacía para Ollama)"
+  },
+  "options_models_providers_apiKey_hide": {
+    "message": "Ocultar API key"
+  },
+  "options_models_providers_apiKey_show": {
+    "message": "Mostrar API key"
+  },
+
+  "options_models_selection_header": {
+    "message": "Selección de modelos"
+  },
+  "options_models_speechToText_header": {
+    "message": "Modelo de voz-a-texto"
+  },
+
+  "options_models_agents_navigator": {
+    "message": "Navega por sitios web y realiza acciones"
+  },
+  "options_models_agents_planner": {
+    "message": "Desarrolla y refina estrategias para completar tareas"
+  },
+
+  "options_models_labels_model": {
+    "message": "Modelo"
+  },
+  "options_models_labels_temperature": {
+    "message": "Temperatura"
+  },
+  "options_models_labels_topP": {
+    "message": "Top P"
+  },
+  "options_models_labels_reasoning": {
+    "message": "Razonamiento"
+  },
+  "options_models_stt_desc": {
+    "message": "Configura el modelo de Gemini usado para convertir voz a texto al usar la función de micrófono."
+  },
+  "options_models_chooseModel": {
+    "message": "Elegir modelo"
+  },
+  "options_models_addNewProvider": {
+    "message": "Añadir nuevo proveedor"
+  },
+  "options_models_providers_openaiCompatible": {
+    "message": "Proveedor compatible con API OpenAI"
+  },
+  "options_models_providers_baseUrl": {
+    "message": "URL base"
+  },
+  "options_models_providers_endpoint": {
+    "message": "Endpoint"
+  },
+  "options_models_providers_deployment": {
+    "message": "Implementación"
+  },
+  "options_models_providers_apiVersion": {
+    "message": "Versión de API"
+  },
+  "options_models_providers_models": {
+    "message": "Modelos"
+  },
+  "options_models_providers_placeholders_baseUrl_custom": {
+    "message": "Endpoint de API compatible con OpenAI (obligatorio)"
+  },
+  "options_models_providers_placeholders_baseUrl_azure": {
+    "message": "https://TU_NOMBRE_DE_RECURSO.openai.azure.com/"
+  },
+  "options_models_providers_placeholders_baseUrl_openrouter": {
+    "message": "URL base de OpenRouter (opcional, por defecto https://openrouter.ai/api/v1)"
+  },
+  "options_models_providers_placeholders_baseUrl_llama": {
+    "message": "URL base de la API de Llama (por defecto https://api.llama.com/v1)"
+  },
+  "options_models_providers_placeholders_baseUrl_ollama": {
+    "message": "URL base de Ollama"
+  },
+  "options_models_providers_placeholders_azureDeployment": {
+    "message": "Introduce el nombre del modelo de Azure (ej. gpt-4o, gpt-4o-mini)"
+  },
+  "options_models_providers_placeholders_azureApiVersion": {
+    "message": "ej., 2025-04-01-preview"
+  },
+  "options_models_providers_deployment_desc": {
+    "message": "Escribe el nombre del modelo y pulsa Enter o Espacio para añadirlo. El nombre de implementación debe coincidir con el nombre del modelo de OpenAI (ej., gpt-4o) para una mejor compatibilidad."
+  },
+  "options_models_providers_models_instructions": {
+    "message": "Escribe y pulsa Enter o Espacio para añadir."
+  },
+  "options_models_providers_models_openrouter_empty": {
+    "message": "No hay modelos seleccionados. Añade nombres de modelo manualmente si es necesario."
+  },
+  "options_models_providers_ollama_reminder": {
+    "message": "la variable de entorno DEBE configurarse para el servidor Ollama."
+  },
+  "options_models_providers_ollama_learnMore": {
+    "message": "Saber más"
+  },
+  "options_models_providers_errors_spacesNotAllowed": {
+    "message": "No se permiten espacios en los nombres de proveedor. Usa guiones bajos u otros caracteres."
+  },
+  "options_models_providers_errors_baseUrlRequired": {
+    "message": "La URL base es obligatoria para $PROVIDER$. Introdúcela.",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Custom OpenAI"
+      }
+    }
+  },
+
+  "options_firewall_header": {
+    "message": "Firewall"
+  },
+  "options_firewall_enableToggle": {
+    "message": "Habilitar firewall"
+  },
+  "options_firewall_toggleFirewall_a11y": {
+    "message": "Activar/desactivar firewall"
+  },
+  "options_firewall_allowList_header": {
+    "message": "Lista de permitidos"
+  },
+  "options_firewall_allowList_empty": {
+    "message": "No hay dominios en la lista de permitidos. Una lista vacía significa que todos los dominios no denegados están permitidos."
+  },
+  "options_firewall_denyList_header": {
+    "message": "Lista de denegados"
+  },
+  "options_firewall_denyList_empty": {
+    "message": "No hay dominios en la lista de denegados"
+  },
+  "options_firewall_placeholders_domainUrl": {
+    "message": "Introduce un dominio o URL (ej. example.com, localhost, 127.0.0.1)"
+  },
+  "options_firewall_btnAdd": {
+    "message": "Añadir"
+  },
+  "options_firewall_btnRemove": {
+    "message": "Quitar"
+  },
+  "options_firewall_howItWorks_header": {
+    "message": "Cómo funciona el firewall"
+  },
+  "options_firewall_howItWorks": {
+    "message": "El firewall contiene una lista de denegados y una de permitidos.\nSi ambas listas están vacías, todas las URLs están permitidas\nLa lista de denegados tiene prioridad: si una URL coincide con alguna entrada de la lista de denegados, se bloquea\nCuando la lista de permitidos está vacía, todas las URLs no denegadas están permitidas\nCuando la lista de permitidos no está vacía, solo se permiten las URLs que coinciden\nLos comodines NO están soportados aún\nLa lista de permitidos tiene preferencia sobre la de denegados"
+  },
+
+  "bg_errors_noTabId": {
+    "message": "No se proporcionó ID de pestaña"
+  },
+  "bg_errors_noTaskId": {
+    "message": "No se proporcionó ID de tarea"
+  },
+  "bg_errors_noRunningTask": {
+    "message": "No hay ninguna tarea en ejecución"
+  },
+  "bg_cmd_newTask_noTask": {
+    "message": "No se proporcionó ninguna tarea"
+  },
+  "bg_cmd_followUpTask_noTask": {
+    "message": "No se proporcionó ninguna tarea de seguimiento"
+  },
+  "bg_cmd_followUpTask_cleaned": {
+    "message": "El ejecutor fue limpiado, no se puede añadir una tarea de seguimiento"
+  },
+  "bg_cmd_resumeTask_noTask": {
+    "message": "No hay ninguna tarea para reanudar"
+  },
+  "bg_cmd_state_printed": {
+    "message": "Estado impreso en la consola"
+  },
+  "bg_cmd_state_failed": {
+    "message": "No se pudo obtener el estado"
+  },
+  "bg_cmd_nohighlight_ok": {
+    "message": "resaltado eliminado"
+  },
+  "bg_cmd_stt_noAudioData": {
+    "message": "No se proporcionaron datos de audio"
+  },
+  "bg_cmd_stt_failed": {
+    "message": "El reconocimiento de voz falló"
+  },
+  "bg_cmd_replay_noHistory": {
+    "message": "No se proporcionó ID de sesión de historial"
+  },
+  "bg_cmd_replay_failed": {
+    "message": "Reproducción fallida"
+  },
+  "bg_setup_noApiKeys": {
+    "message": "Configura primero las API keys en la configuración"
+  },
+  "bg_setup_noProvider": {
+    "message": "El proveedor $PROVIDER$ no se encuentra en la configuración",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "openai"
+      }
+    }
+  },
+  "bg_setup_noNavigatorModel": {
+    "message": "Elige primero un modelo para el navegador en la configuración"
+  },
+  "exec_errors_maxStepsReached": {
+    "message": "Se alcanzaron los pasos máximos"
+  },
+  "exec_errors_maxFailuresReached": {
+    "message": "Se alcanzaron los fallos máximos"
+  },
+  "exec_task_cancel": {
+    "message": "Tarea cancelada"
+  },
+  "exec_task_pause": {
+    "message": "Tarea en pausa"
+  },
+  "exec_task_fail": {
+    "message": "Tarea fallida: \n\n$ERROR_MESSAGE$",
+    "placeholders": {
+      "error_message": {
+        "content": "$1",
+        "example": "Connection timeout"
+      }
+    }
+  },
+  "exec_replay_cancel": {
+    "message": "Reproducción cancelada"
+  },
+  "exec_replay_ok": {
+    "message": "Reproducción completada"
+  },
+  "exec_replay_fail": {
+    "message": "Reproducción fallida: \n\n$ERROR_MESSAGE$",
+    "placeholders": {
+      "error_message": {
+        "content": "$1",
+        "example": "Network error"
+      }
+    }
+  },
+  "exec_replay_historyNotFound": {
+    "message": "Historial no encontrado"
+  },
+  "exec_replay_historyEmpty": {
+    "message": "El historial está vacío"
+  },
+
+  "act_searchGoogle_start": {
+    "message": "Buscando \"$QUERY$\" en Google",
+    "placeholders": {
+      "query": {
+        "content": "$1",
+        "example": "weather today"
+      }
+    }
+  },
+  "act_searchGoogle_ok": {
+    "message": "Búsqueda realizada: \"$QUERY$\" en Google",
+    "placeholders": {
+      "query": {
+        "content": "$1",
+        "example": "weather today"
+      }
+    }
+  },
+  "act_goToUrl_start": {
+    "message": "Navegando a $URL$",
+    "placeholders": {
+      "url": {
+        "content": "$1",
+        "example": "https://example.com"
+      }
+    }
+  },
+  "act_goToUrl_ok": {
+    "message": "Navegado a $URL$",
+    "placeholders": {
+      "url": {
+        "content": "$1",
+        "example": "https://example.com"
+      }
+    }
+  },
+  "act_goBack_start": {
+    "message": "Volviendo atrás"
+  },
+  "act_goBack_ok": {
+    "message": "Volvió atrás"
+  },
+  "act_wait_start": {
+    "message": "Esperando $SECONDS$ segundos",
+    "placeholders": {
+      "seconds": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "act_wait_ok": {
+    "message": "Pasaron $SECONDS$ segundos",
+    "placeholders": {
+      "seconds": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "act_click_start": {
+    "message": "Hacer clic en el elemento con índice $INDEX$",
+    "placeholders": {
+      "index": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "act_errors_elementNotExist": {
+    "message": "El elemento con índice $INDEX$ no existe - reintenta o usa acciones alternativas",
+    "placeholders": {
+      "index": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "act_errors_elementNoLongerAvailable": {
+    "message": "El elemento con índice $INDEX$ ya no está disponible - probablemente la página cambió",
+    "placeholders": {
+      "index": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "act_click_fileUploader": {
+    "message": "Índice $INDEX$ - tiene un elemento que abre el diálogo de subida de archivos. Para subir archivos usa la función específica",
+    "placeholders": {
+      "index": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "act_click_ok": {
+    "message": "Clic hecho en el elemento con índice $INDEX$: $TEXT$",
+    "placeholders": {
+      "index": {
+        "content": "$1",
+        "example": "5"
+      },
+      "text": {
+        "content": "$2",
+        "example": "Submit Button"
+      }
+    }
+  },
+  "act_click_newTabOpened": {
+    "message": "Se abrió una nueva pestaña - cambiando a ella"
+  },
+  "act_inputText_start": {
+    "message": "Introducir texto en el índice $INDEX$",
+    "placeholders": {
+      "index": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "act_inputText_ok": {
+    "message": "Texto $TEXT$ introducido en el índice $INDEX$",
+    "placeholders": {
+      "text": {
+        "content": "$1",
+        "example": "Hello World"
+      },
+      "index": {
+        "content": "$2",
+        "example": "5"
+      }
+    }
+  },
+  "act_switchTab_start": {
+    "message": "Cambiando a la pestaña $TAB_ID$",
+    "placeholders": {
+      "tab_id": {
+        "content": "$1",
+        "example": "123456"
+      }
+    }
+  },
+  "act_switchTab_ok": {
+    "message": "Cambió a la pestaña $TAB_ID$",
+    "placeholders": {
+      "tab_id": {
+        "content": "$1",
+        "example": "123456"
+      }
+    }
+  },
+  "act_openTab_start": {
+    "message": "Abriendo $URL$ en una nueva pestaña",
+    "placeholders": {
+      "url": {
+        "content": "$1",
+        "example": "https://example.com"
+      }
+    }
+  },
+  "act_openTab_ok": {
+    "message": "$URL$ abierta en una nueva pestaña",
+    "placeholders": {
+      "url": {
+        "content": "$1",
+        "example": "https://example.com"
+      }
+    }
+  },
+  "act_closeTab_start": {
+    "message": "Cerrando la pestaña $TAB_ID$",
+    "placeholders": {
+      "tab_id": {
+        "content": "$1",
+        "example": "123456"
+      }
+    }
+  },
+  "act_closeTab_ok": {
+    "message": "Pestaña $TAB_ID$ cerrada",
+    "placeholders": {
+      "tab_id": {
+        "content": "$1",
+        "example": "123456"
+      }
+    }
+  },
+  "act_cache_start": {
+    "message": "Guardando hallazgos: $CONTENT$",
+    "placeholders": {
+      "content": {
+        "content": "$1",
+        "example": "User preferences saved"
+      }
+    }
+  },
+  "act_cache_ok": {
+    "message": "Hallazgos guardados: $CONTENT$",
+    "placeholders": {
+      "content": {
+        "content": "$1",
+        "example": "User preferences saved"
+      }
+    }
+  },
+  "act_scrollToPercent_start": {
+    "message": "Desplazar al porcentaje: $PERCENT$",
+    "placeholders": {
+      "percent": {
+        "content": "$1",
+        "example": "50"
+      }
+    }
+  },
+  "act_scrollToPercent_ok": {
+    "message": "Desplazado al porcentaje: $PERCENT$",
+    "placeholders": {
+      "percent": {
+        "content": "$1",
+        "example": "50"
+      }
+    }
+  },
+  "act_scrollToTop_start": {
+    "message": "Desplazar arriba"
+  },
+  "act_scrollToTop_ok": {
+    "message": "Desplazado arriba"
+  },
+  "act_scrollToBottom_start": {
+    "message": "Desplazar abajo"
+  },
+  "act_scrollToBottom_ok": {
+    "message": "Desplazado abajo"
+  },
+  "act_previousPage_start": {
+    "message": "Desplazar a la página anterior"
+  },
+  "act_previousPage_ok": {
+    "message": "Desplazado a la página anterior"
+  },
+  "act_nextPage_start": {
+    "message": "Desplazar a la página siguiente"
+  },
+  "act_nextPage_ok": {
+    "message": "Desplazado a la página siguiente"
+  },
+  "act_errors_alreadyAtTop": {
+    "message": "El elemento con índice $INDEX$ ya está arriba, no se puede desplazar a la página anterior",
+    "placeholders": {
+      "index": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "act_errors_pageAlreadyAtTop": {
+    "message": "Ya estás arriba de la página, no se puede desplazar a la página anterior"
+  },
+  "act_errors_alreadyAtBottom": {
+    "message": "El elemento con índice $INDEX$ ya está abajo, no se puede desplazar a la página siguiente",
+    "placeholders": {
+      "index": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "act_errors_pageAlreadyAtBottom": {
+    "message": "Ya estás abajo de la página, no se puede desplazar a la página siguiente"
+  },
+  "act_scrollToText_start": {
+    "message": "Desplazar al texto: $TEXT$, aparición $OCCURRENCE$",
+    "placeholders": {
+      "text": {
+        "content": "$1",
+        "example": "Contact Us"
+      },
+      "occurrence": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "act_scrollToText_ok": {
+    "message": "Desplazado al texto: $TEXT$, aparición $OCCURRENCE$",
+    "placeholders": {
+      "text": {
+        "content": "$1",
+        "example": "Contact Us"
+      },
+      "occurrence": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "act_scrollToText_notFound": {
+    "message": "El texto '$TEXT$' (aparición $OCCURRENCE$) no se encontró o no es visible",
+    "placeholders": {
+      "text": {
+        "content": "$1",
+        "example": "Contact Us"
+      },
+      "occurrence": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "act_scrollToText_failed": {
+    "message": "No se pudo desplazar al texto: $ERROR$",
+    "placeholders": {
+      "error": {
+        "content": "$1",
+        "example": "Element not found"
+      }
+    }
+  },
+  "act_sendKeys_start": {
+    "message": "Enviar teclas: $KEYS$",
+    "placeholders": {
+      "keys": {
+        "content": "$1",
+        "example": "Enter"
+      }
+    }
+  },
+  "act_sendKeys_ok": {
+    "message": "Teclas enviadas: $KEYS$",
+    "placeholders": {
+      "keys": {
+        "content": "$1",
+        "example": "Enter"
+      }
+    }
+  },
+  "act_getDropdownOptions_start": {
+    "message": "Obteniendo opciones del desplegable con índice $INDEX$",
+    "placeholders": {
+      "index": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "act_getDropdownOptions_useExactText": {
+    "message": "Usa la cadena de texto exacta en select_dropdown_option"
+  },
+  "act_getDropdownOptions_ok": {
+    "message": "Se obtuvieron $COUNT$ opciones del desplegable",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "act_getDropdownOptions_noOptions": {
+    "message": "No se encontraron opciones en el desplegable"
+  },
+  "act_getDropdownOptions_failed": {
+    "message": "No se pudieron obtener las opciones del desplegable: $ERROR$",
+    "placeholders": {
+      "error": {
+        "content": "$1",
+        "example": "Element not found"
+      }
+    }
+  },
+  "act_selectDropdownOption_start": {
+    "message": "Seleccionar opción \"$TEXT$\" del desplegable con índice $INDEX$",
+    "placeholders": {
+      "text": {
+        "content": "$1",
+        "example": "Option 1"
+      },
+      "index": {
+        "content": "$2",
+        "example": "5"
+      }
+    }
+  },
+  "act_selectDropdownOption_ok": {
+    "message": "Opción \"$TEXT$\" seleccionada del desplegable con índice $INDEX$",
+    "placeholders": {
+      "text": {
+        "content": "$1",
+        "example": "Option 1"
+      },
+      "index": {
+        "content": "$2",
+        "example": "5"
+      }
+    }
+  },
+  "act_selectDropdownOption_notSelect": {
+    "message": "No se puede seleccionar la opción: el elemento con índice $INDEX$ es un $TAG_NAME$, no un SELECT",
+    "placeholders": {
+      "index": {
+        "content": "$1",
+        "example": "5"
+      },
+      "tag_name": {
+        "content": "$2",
+        "example": "DIV"
+      }
+    }
+  },
+  "act_selectDropdownOption_failed": {
+    "message": "No se pudo seleccionar la opción: $ERROR$",
+    "placeholders": {
+      "error": {
+        "content": "$1",
+        "example": "Option not found"
+      }
+    }
+  }
+}

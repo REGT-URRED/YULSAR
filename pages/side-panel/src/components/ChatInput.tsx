@@ -233,7 +233,7 @@ export default function ChatInput({
                 ? 'bg-onyx-600 text-bone'
                 : 'bg-white'
           }`}
-          placeholder={attachedFiles.length > 0 ? 'Add a message (optional)...' : t('chat_input_placeholder')}
+          placeholder={attachedFiles.length > 0 ? 'Añade un mensaje (opcional)...' : t('chat_input_placeholder')}
           aria-label={t('chat_input_editor')}
         />
 
@@ -248,7 +248,7 @@ export default function ChatInput({
               onClick={handleFileSelect}
               disabled={disabled}
               aria-label="Attach files"
-              title="Attach text files (txt, md, json, csv, etc.)"
+              title="Adjuntar archivos de texto (txt, md, json, csv, etc.)"
               className={`rounded-md p-1.5 transition-colors ${
                 disabled
                   ? 'cursor-not-allowed opacity-50'
