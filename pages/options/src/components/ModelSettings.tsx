@@ -425,33 +425,20 @@ export const ModelSettings = ({ isDarkMode = false }: ModelSettingsProps) => {
       };
     }
 
-    // For saving, we need to check if it has the required inputs
-    let hasInput = false;
-    const providerType = providers[provider]?.type;
-    const config = providers[provider];
-
+    // ponytail: only CustomOpenAI, Ollama, and AzureOpenAI need explicit baseUrl
+    // all other built-in providers have defaults — API key is enough
     if (providerType === ProviderTypeEnum.CustomOpenAI) {
-      hasInput = Boolean(config?.baseUrl?.trim()); // Custom needs Base URL, name checked elsewhere
+      hasInput = Boolean(config?.baseUrl?.trim()); // Custom needs Base URL
     } else if (providerType === ProviderTypeEnum.Ollama) {
       hasInput = Boolean(config?.baseUrl?.trim()); // Ollama needs Base URL
     } else if (providerType === ProviderTypeEnum.AzureOpenAI) {
-      // Azure needs API Key, Endpoint, Deployment Names, and API Version
       hasInput =
         Boolean(config?.apiKey?.trim()) &&
         Boolean(config?.baseUrl?.trim()) &&
         Boolean(config?.azureDeploymentNames?.length) &&
         Boolean(config?.azureApiVersion?.trim());
-    } else if (providerType === ProviderTypeEnum.OpenRouter) {
-      // OpenRouter needs API Key and optionally Base URL (has default)
-      hasInput = Boolean(config?.apiKey?.trim()) && Boolean(config?.baseUrl?.trim());
-    } else if (providerType === ProviderTypeEnum.Llama) {
-      // Llama needs API Key and Base URL
-      hasInput = Boolean(config?.apiKey?.trim()) && Boolean(config?.baseUrl?.trim());
-    } else if (providerType === ProviderTypeEnum.Bynara) {
-      // Bynara needs API Key and Base URL
-      hasInput = Boolean(config?.apiKey?.trim()) && Boolean(config?.baseUrl?.trim());
     } else {
-      // Other built-in providers just need API Key
+      // Built-in providers: just need API Key (baseUrl has default)
       hasInput = Boolean(config?.apiKey?.trim());
     }
 
@@ -474,15 +461,9 @@ export const ModelSettings = ({ isDarkMode = false }: ModelSettingsProps) => {
         return;
       }
 
-      // Check if base URL is required but missing for custom_openai, ollama, azure_openai or openrouter
-      // Note: Groq and Cerebras do not require base URL as they use the default endpoint
+      // ponytail: only CustomOpenAI requires explicit baseUrl (built-ins have defaults)
       if (
-        (providers[provider].type === ProviderTypeEnum.CustomOpenAI ||
-          providers[provider].type === ProviderTypeEnum.Ollama ||
-          providers[provider].type === ProviderTypeEnum.AzureOpenAI ||
-          providers[provider].type === ProviderTypeEnum.OpenRouter ||
-          providers[provider].type === ProviderTypeEnum.Llama ||
-          providers[provider].type === ProviderTypeEnum.Bynara) &&
+        providers[provider].type === ProviderTypeEnum.CustomOpenAI &&
         (!providers[provider].baseUrl || !providers[provider].baseUrl.trim())
       ) {
         alert(t('options_models_providers_errors_baseUrlRequired', getDefaultDisplayNameFromProviderId(provider)));
@@ -521,6 +502,9 @@ export const ModelSettings = ({ isDarkMode = false }: ModelSettingsProps) => {
       // Pass the cleaned config to setProvider
       // Cast to ProviderConfig as we've ensured necessary fields based on type
       await llmProviderStore.setProvider(provider, configToSave as ProviderConfig);
+
+      // ponytail: auto-fetch models after saving — just API key is enough
+      await handleFetchModels(provider);
 
       // Clear any name errors on successful save
       setNameErrors(prev => {
@@ -1558,26 +1542,6 @@ export const ModelSettings = ({ isDarkMode = false }: ModelSettingsProps) => {
                               <p className={`mt-1 text-xs ${isDarkMode ? 'text-bone-400' : 'text-bone-500'}`}>
                                 {t('options_models_providers_models_instructions')}
                               </p>
-                              <div className="mt-2 flex items-center gap-2">
-                                <button
-                                  type="button"
-                                  onClick={() => handleFetchModels(providerId)}
-                                  disabled={fetchingProvider === providerId || !providerConfig.apiKey?.trim()}
-                                  className={`rounded px-3 py-1 text-xs font-medium transition-colors ${
-                                    fetchingProvider === providerId
-                                      ? 'cursor-wait bg-slate-500 text-white'
-                                      : !providerConfig.apiKey?.trim()
-                                        ? 'cursor-not-allowed bg-gray-300 text-gray-500'
-                                        : isDarkMode
-                                          ? 'bg-blue-700 text-white hover:bg-blue-600'
-                                          : 'bg-blue-500 text-white hover:bg-blue-600'
-                                  }`}>
-                                  {fetchingProvider === providerId ? 'Cargando...' : 'Obtener modelos'}
-                                </button>
-                                {fetchErrors[providerId] && (
-                                  <span className="text-xs text-red-500">{fetchErrors[providerId]}</span>
-                                )}
-                              </div>
                             </>
                           )}
                           {/* === END: Conditional UI === */}

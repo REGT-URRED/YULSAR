@@ -1,6 +1,6 @@
 /* Add this at the top of the file */
 body {
-  border-color: rgb(159, 6, 11) !important; /* sky-200 color */
+  border-color: rgb(159, 6, 11) !important; /* crimson-700 */
 }
 
 /* Remove unused classes: .App, .App-logo, .App-header */
@@ -122,44 +122,44 @@ code {
 }
 
 .scrollbar-gutter-stable::-webkit-scrollbar-track {
-  background: #f1f5f9;  /* sky-50 */
+  background: #D8D2C4;  /* bone-300 */
 }
 
 .scrollbar-gutter-stable::-webkit-scrollbar-thumb {
-  background: #7dd3fc;  /* sky-300 - very light blue */
+  background: #EB5D72;  /* crimson-300 */
   border-radius: 4px;
 }
 
 .scrollbar-gutter-stable::-webkit-scrollbar-thumb:hover {
-  background: #38bdf8;  /* sky-400 - slightly darker on hover */
+  background: #D63850;  /* crimson-400 */
 }
 
 /* Dark mode scrollbar for scrollbar-gutter-stable */
 @media (prefers-color-scheme: dark) {
   .scrollbar-gutter-stable::-webkit-scrollbar-track {
-    background: #1e293b;  /* slate-800 */
+    background: #221F28;  /* onyx-600 */
   }
   
   .scrollbar-gutter-stable::-webkit-scrollbar-thumb {
-    background: #0ea5e9;  /* sky-500 */
+    background: #B3122F;  /* crimson */
   }
   
   .scrollbar-gutter-stable::-webkit-scrollbar-thumb:hover {
-    background: #38bdf8;  /* sky-400 */
+    background: #D63850;  /* crimson-400 */
   }
 }
 
 /* Dark mode text and background colors */
 @media (prefers-color-scheme: dark) {
   .dark-mode-text {
-    color: #e2e8f0 !important; /* slate-200 */
+    color: #F4F0E6 !important; /* bone */
   }
   
   .dark-mode-bg {
-    background-color: #1e293b !important; /* slate-800 */
+    background-color: #221F28 !important; /* onyx-600 */
   }
   
   .dark-mode-border {
-    border-color: #475569 !important; /* slate-600 */
+    border-color: #37333D !important; /* onyx-500 */
   }
 }

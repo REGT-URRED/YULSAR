@@ -162,8 +162,8 @@ const BookmarkList: React.FC<BookmarkListProps> = ({
                   }}
                   className={`absolute right-[28px] top-1/2 z-10 -translate-y-1/2 rounded p-1 opacity-0 transition-opacity duration-200 group-hover:opacity-100 ${
                     isDarkMode
-                      ? 'bg-slate-700 text-sky-400 hover:bg-slate-600'
-                      : 'bg-white text-sky-500 hover:bg-gray-100'
+                      ? 'bg-onyx-700 text-crimson-400 hover:bg-onyx-500'
+                      : 'bg-white text-crimson-500 hover:bg-gray-100'
                   }`}
                   aria-label={t('chat_bookmarks_edit')}
                   type="button">
