@@ -35,46 +35,62 @@ function MessageBlock({ message, isSameActor, isDarkMode = false }: MessageBlock
   }
   const actor = ACTOR_PROFILES[message.actor as keyof typeof ACTOR_PROFILES];
   const isProgress = message.content === 'Showing progress...';
+  const isUser = message.actor === 'user';
+  const isAgent = message.actor === 'planner' || message.actor === 'navigator' || message.actor === 'validator';
 
   return (
     <div
       className={`flex max-w-full gap-3 ${
         !isSameActor
-          ? `mt-4 border-t ${isDarkMode ? 'border-crimson-700/50' : 'border-crimson-400/50'} pt-4 first:mt-0 first:border-t-0 first:pt-0`
+          ? `mt-4 border-t ${isDarkMode ? 'border-onyx-700/60' : 'border-crimson-400/50'} pt-4 first:mt-0 first:border-t-0 first:pt-0`
           : ''
-      }`}>
+      } ${isUser ? 'flex-row-reverse' : ''}`}>
       {!isSameActor && (
         <div
-          className="flex size-8 shrink-0 items-center justify-center rounded-full"
+          className={`flex size-8 shrink-0 items-center justify-center rounded-full ${
+            isAgent && isDarkMode ? 'shadow-[0_0_10px_rgba(179,18,47,0.35)]' : ''
+          }`}
           style={{ backgroundColor: actor.iconBackground }}>
           <img src={actor.icon} alt={actor.name} className="size-6" />
         </div>
       )}
       {isSameActor && <div className="w-8" />}
 
-      <div className="min-w-0 flex-1">
+      <div className={`min-w-0 flex-1 ${isUser ? 'text-right' : ''}`}>
         {!isSameActor && (
-          <div className={`mb-1 text-sm font-semibold ${isDarkMode ? 'text-bone' : 'text-bone-900'}`}>
+          <div
+            className={`mb-1 text-sm font-semibold ${
+              isDarkMode ? 'text-bone' : 'text-bone-900'
+            } ${isUser ? 'text-right' : ''}`}>
             {actor.name}
           </div>
         )}
 
-        <div className="space-y-0.5">
+        <div
+          className={`inline-block max-w-full rounded-xl border px-3 py-2 text-left ${
+            isUser
+              ? isDarkMode
+                ? 'border-onyx-600 bg-onyx-600/70'
+                : 'border-gray-200 bg-gray-100'
+              : isDarkMode
+                ? 'border-onyx-700/80 bg-onyx-700/50'
+                : 'border-crimson-100 bg-white/70'
+          }`}>
           <div className={`text-sm ${isDarkMode ? 'text-bone-300' : 'text-bone-700'}`}>
             {isProgress ? (
-              <div className={`h-1 overflow-hidden rounded ${isDarkMode ? 'bg-onyx-700' : 'bg-gray-200'}`}>
+              <div className={`h-1 overflow-hidden rounded ${isDarkMode ? 'bg-onyx-800' : 'bg-gray-200'}`}>
                 <div className="h-full animate-progress bg-crimson" />
               </div>
             ) : (
               renderContent(message.content, isDarkMode)
             )}
           </div>
-          {!isProgress && (
-            <div className={`text-right text-xs ${isDarkMode ? 'text-bone-500' : 'text-gray-300'}`}>
-              {formatTimestamp(message.timestamp)}
-            </div>
-          )}
         </div>
+        {!isProgress && (
+          <div className={`mt-1 text-xs ${isDarkMode ? 'text-bone-500' : 'text-gray-300'}`}>
+            {formatTimestamp(message.timestamp)}
+          </div>
+        )}
       </div>
     </div>
   );

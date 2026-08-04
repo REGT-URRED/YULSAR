@@ -10,6 +10,7 @@ import MessageList from './components/MessageList';
 import ChatInput from './components/ChatInput';
 import ChatHistoryList from './components/ChatHistoryList';
 import BookmarkList from './components/BookmarkList';
+import AgentStatusBar from './components/AgentStatusBar';
 import { EventType, type AgentEvent, ExecutionState } from './types/event';
 import './SidePanel.css';
 
@@ -37,6 +38,8 @@ const SidePanel = () => {
   const [isProcessingSpeech, setIsProcessingSpeech] = useState(false);
   const [isReplaying, setIsReplaying] = useState(false);
   const [replayEnabled, setReplayEnabled] = useState(false);
+  const [isAgentRunning, setIsAgentRunning] = useState(false);
+  const [lastAction, setLastAction] = useState('');
   const sessionIdRef = useRef<string | null>(null);
   const isReplayingRef = useRef<boolean>(false);
   const portRef = useRef<chrome.runtime.Port | null>(null);
@@ -159,18 +162,22 @@ const SidePanel = () => {
             case ExecutionState.TASK_START:
               // Reset historical session flag when a new task starts
               setIsHistoricalSession(false);
+              setIsAgentRunning(true);
+              setLastAction('');
               break;
             case ExecutionState.TASK_OK:
               setIsFollowUpMode(true);
               setInputEnabled(true);
               setShowStopButton(false);
               setIsReplaying(false);
+              setIsAgentRunning(false);
               break;
             case ExecutionState.TASK_FAIL:
               setIsFollowUpMode(true);
               setInputEnabled(true);
               setShowStopButton(false);
               setIsReplaying(false);
+              setIsAgentRunning(false);
               skip = false;
               break;
             case ExecutionState.TASK_CANCEL:
@@ -178,6 +185,7 @@ const SidePanel = () => {
               setInputEnabled(true);
               setShowStopButton(false);
               setIsReplaying(false);
+              setIsAgentRunning(false);
               skip = false;
               break;
             case ExecutionState.TASK_PAUSE:
@@ -225,16 +233,20 @@ const SidePanel = () => {
               displayProgress = false;
               break;
             case ExecutionState.ACT_START:
-              if (content !== 'cache_content') {
-                // skip to display caching content
-                skip = false;
+              // ponytail: live status instead of message spam — capture action for the status bar
+              // replay mode keeps the original per-action messages
+              if (content && content !== 'cache_content') {
+                setLastAction(content);
               }
+              skip = isReplayingRef.current ? false : true;
               break;
             case ExecutionState.ACT_OK:
+              // ponytail: filtered in live mode — the status bar shows progress; only failures surface
               skip = !isReplayingRef.current;
               break;
             case ExecutionState.ACT_FAIL:
               skip = false;
+              setIsAgentRunning(false);
               break;
             default:
               console.error('Invalid action', state);
@@ -1013,7 +1025,24 @@ const SidePanel = () => {
                 {t('nav_back')}
               </button>
             ) : (
-              <img src="/icon-128.png" alt="Extension Logo" className="size-6" />
+              <div className="flex items-center gap-2">
+                <img src="/icon-128.png" alt="YULSAR Logo" className="size-6" />
+                <div className="flex items-center gap-1.5">
+                  <span className={`text-sm font-semibold tracking-wide ${isDarkMode ? 'text-bone' : 'text-bone-900'}`}>
+                    YULSAR
+                  </span>
+                  <span
+                    className={`inline-block size-1.5 rounded-full ${
+                      isAgentRunning
+                        ? 'animate-status-pulse bg-crimson'
+                        : isDarkMode
+                          ? 'bg-bone-500/60'
+                          : 'bg-bone-400'
+                    }`}
+                    title={isAgentRunning ? 'Trabajando' : 'Listo'}
+                  />
+                </div>
+              </div>
             )}
           </div>
           <div className="header-icons">
@@ -1050,6 +1079,7 @@ const SidePanel = () => {
             </button>
           </div>
         </header>
+        <AgentStatusBar isRunning={isAgentRunning} lastAction={lastAction} isDarkMode={isDarkMode} />
         {showHistory ? (
           <div className="flex-1 overflow-hidden">
             <ChatHistoryList
@@ -1077,18 +1107,29 @@ const SidePanel = () => {
             {/* Show setup message when no models are configured */}
             {hasConfiguredModels === false && (
               <div
-                className={`flex flex-1 items-center justify-center p-8 ${isDarkMode ? 'text-crimson-300' : 'text-crimson-600'}`}>
-                <div className="max-w-md text-center">
-                  <img src="/icon-128.png" alt="YULSAR Logo" className="mx-auto mb-4 size-12" />
-                  <h3 className={`mb-2 text-lg font-semibold ${isDarkMode ? 'text-crimson-200' : 'text-crimson-700'}`}>
+                className={`flex flex-1 items-center justify-center p-8 ${isDarkMode ? 'text-bone-300' : 'text-crimson-600'}`}>
+                <div
+                  className={`relative max-w-md overflow-hidden rounded-2xl border p-6 text-center ${
+                    isDarkMode
+                      ? 'border-crimson-700/50 bg-onyx-700/50 shadow-[0_0_24px_rgba(179,18,47,0.15)]'
+                      : 'border-crimson-100 bg-white/70'
+                  }`}>
+                  {/* subtle static aura */}
+                  <div
+                    className="pointer-events-none absolute inset-x-0 top-0 h-16 opacity-60"
+                    style={{
+                      background:
+                        'linear-gradient(180deg, rgba(179,18,47,0.28) 0%, rgba(255,122,26,0.12) 60%, transparent 100%)',
+                    }}
+                  />
+                  <img src="/icon-128.png" alt="YULSAR Logo" className="mx-auto mb-4 size-14" />
+                  <h3 className={`mb-2 text-lg font-semibold ${isDarkMode ? 'text-bone' : 'text-crimson-700'}`}>
                     {t('welcome_title')}
                   </h3>
-                  <p className="mb-4">{t('welcome_instruction')}</p>
+                  <p className="mb-4 text-sm">{t('welcome_instruction')}</p>
                   <button
                     onClick={() => chrome.runtime.openOptionsPage()}
-                    className={`my-4 rounded-lg px-4 py-2 font-medium transition-colors ${
-                      isDarkMode ? 'bg-crimson text-white hover:bg-crimson-700' : 'bg-crimson-600 text-white hover:bg-crimson-600'
-                    }`}>
+                    className={`my-4 rounded-md bg-gradient-to-r from-crimson to-[#FF7A1A] px-5 py-2 text-sm font-semibold text-white shadow-[0_2px_10px_rgba(179,18,47,0.35)] transition-all hover:from-crimson-600 hover:to-[#E06A10]`}>
                     {t('welcome_openSettings')}
                   </button>
                 </div>

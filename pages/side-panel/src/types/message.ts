@@ -2,12 +2,12 @@ export const ACTOR_PROFILES = {
   user: {
     name: 'User',
     icon: 'icons/user.svg',
-    iconBackground: '#4CAF50',
+    iconBackground: '#5A5242',
   },
   system: {
     name: 'System',
     icon: 'icons/system.svg',
-    iconBackground: '#2196F3',
+    iconBackground: '#37333D',
   },
   planner: {
     name: 'Planner',
@@ -17,21 +17,21 @@ export const ACTOR_PROFILES = {
   navigator: {
     name: 'Navigator',
     icon: 'icons/navigator.svg',
-    iconBackground: '#40A9FF',
+    iconBackground: '#B3122F',
   },
   validator: {
     name: 'Validator',
     icon: 'icons/validator.svg',
-    iconBackground: '#EC407A',
+    iconBackground: '#D63850',
   },
   manager: {
     name: 'Manager',
     icon: 'icons/manager.svg',
-    iconBackground: '#9C27B0',
+    iconBackground: '#8F0E25',
   },
   evaluator: {
     name: 'Evaluator',
     icon: 'icons/evaluator.svg',
-    iconBackground: '#795548',
+    iconBackground: '#7A705C',
   },
 } as const;

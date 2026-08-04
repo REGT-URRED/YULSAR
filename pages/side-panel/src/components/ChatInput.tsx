@@ -227,10 +227,10 @@ export default function ChatInput({
           className={`w-full resize-none border-none p-2 focus:outline-none ${
             disabled
               ? isDarkMode
-                ? 'cursor-not-allowed bg-slate-800 text-gray-400'
+                ? 'cursor-not-allowed bg-onyx-700 text-bone-400'
                 : 'cursor-not-allowed bg-gray-100 text-gray-500'
               : isDarkMode
-                ? 'bg-slate-800 text-gray-200'
+                ? 'bg-onyx-600 text-bone'
                 : 'bg-white'
           }`}
           placeholder={attachedFiles.length > 0 ? 'Add a message (optional)...' : t('chat_input_placeholder')}
@@ -253,7 +253,7 @@ export default function ChatInput({
                 disabled
                   ? 'cursor-not-allowed opacity-50'
                   : isDarkMode
-                    ? 'text-gray-400 hover:bg-slate-700 hover:text-gray-200'
+                    ? 'text-gray-400 hover:bg-onyx-700 hover:text-gray-200'
                     : 'text-gray-500 hover:bg-gray-100 hover:text-gray-700'
               }`}>
               <span className="text-lg">📎</span>
@@ -286,9 +286,9 @@ export default function ChatInput({
                   disabled || isProcessingSpeech
                     ? 'cursor-not-allowed opacity-50'
                     : isRecording
-                      ? 'bg-red-500 text-white hover:bg-red-600'
+                      ? 'bg-crimson text-white hover:bg-crimson-600'
                       : isDarkMode
-                        ? 'text-gray-400 hover:bg-slate-700 hover:text-gray-200'
+                        ? 'text-gray-400 hover:bg-onyx-700 hover:text-gray-200'
                         : 'text-gray-500 hover:bg-gray-100 hover:text-gray-700'
                 }`}>
                 {isProcessingSpeech ? (
@@ -304,7 +304,7 @@ export default function ChatInput({
             <button
               type="button"
               onClick={onStopTask}
-              className="rounded-md bg-red-500 px-3 py-1 text-white transition-colors hover:bg-red-600">
+              className="rounded-md bg-crimson px-3 py-1 text-white transition-colors hover:bg-crimson-600">
               {t('chat_buttons_stop')}
             </button>
           ) : historicalSessionId ? (
@@ -313,7 +313,7 @@ export default function ChatInput({
               onClick={handleReplay}
               disabled={!historicalSessionId}
               aria-disabled={!historicalSessionId}
-              className={`rounded-md bg-green-500 px-3 py-1 text-white transition-colors hover:enabled:bg-green-600 ${!historicalSessionId ? 'cursor-not-allowed opacity-50' : ''}`}>
+              className={`rounded-md bg-bone-700 px-3 py-1 text-white transition-colors hover:enabled:bg-bone-600 ${!historicalSessionId ? 'cursor-not-allowed opacity-50' : ''}`}>
               {t('chat_buttons_replay')}
             </button>
           ) : (
@@ -321,7 +321,7 @@ export default function ChatInput({
               type="submit"
               disabled={isSendButtonDisabled}
               aria-disabled={isSendButtonDisabled}
-              className={`rounded-md bg-[#19C2FF] px-3 py-1 text-white transition-colors hover:enabled:bg-[#0073DC] ${isSendButtonDisabled ? 'cursor-not-allowed opacity-50' : ''}`}>
+              className={`rounded-md bg-gradient-to-r from-crimson to-[#FF7A1A] px-4 py-1 text-sm font-semibold text-white shadow-[0_2px_8px_rgba(179,18,47,0.35)] transition-all hover:enabled:from-crimson-600 hover:enabled:to-[#E06A10] ${isSendButtonDisabled ? 'cursor-not-allowed opacity-50' : ''}`}>
               {t('chat_buttons_send')}
             </button>
           )}
