@@ -2,6 +2,11 @@ import { StorageEnum } from '../base/enums';
 import { createStorage } from '../base/base';
 import type { BaseStorage } from '../base/types';
 import { type AgentNameEnum, llmProviderModelNames, llmProviderParameters, ProviderTypeEnum } from './types';
+import { fetchModels } from './modelFetcher';
+
+// ponytail: cache fetched models for 24h to avoid hammering provider APIs
+const FETCH_COOLDOWN_MS = 24 * 60 * 60 * 1000;
+const lastFetchTimestamps: Record<string, number> = {};
 
 const AZURE_API_VERSION = '2025-04-01-preview';
 
@@ -30,6 +35,7 @@ export type LLMProviderStorage = BaseStorage<LLMKeyRecord> & {
   removeProvider: (providerId: string) => Promise<void>;
   hasProvider: (providerId: string) => Promise<boolean>;
   getAllProviders: () => Promise<Record<string, ProviderConfig>>;
+  autoFetchProviderModels: (providerId: string, config: ProviderConfig) => Promise<string[]>;
 };
 
 // Storage for LLM provider configurations
@@ -318,5 +324,38 @@ export const llmProviderStore: LLMProviderStorage = {
     }
 
     return providers;
+  },
+
+  async autoFetchProviderModels(providerId: string, config: ProviderConfig) {
+    // ponytail: skip fetch if no apiKey or recently fetched (< 24h cooldown)
+    if (!config.apiKey?.trim()) return [];
+    const type = config.type || getProviderTypeByProviderId(providerId);
+    const lastFetch = lastFetchTimestamps[providerId];
+    if (lastFetch && Date.now() - lastFetch < FETCH_COOLDOWN_MS) {
+      return config.modelNames || [];
+    }
+
+    // skip providers that don't support auto-fetch
+    if (type === ProviderTypeEnum.AzureOpenAI) return config.modelNames || [];
+
+    const result = await fetchModels(type, config.apiKey, config.baseUrl);
+    lastFetchTimestamps[providerId] = Date.now();
+
+    if (result.error || result.models.length === 0) {
+      if (result.error) console.warn(`[autoFetch] ${providerId}: ${result.error}`);
+      return config.modelNames || [];
+    }
+
+    // update in storage
+    const current = await storage.get();
+    const existing = current.providers[providerId];
+    if (existing) {
+      const updated = { ...existing, modelNames: result.models };
+      await storage.set({
+        providers: { ...current.providers, [providerId]: updated },
+      });
+    }
+
+    return result.models;
   },
 };
