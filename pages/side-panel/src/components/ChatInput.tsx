@@ -225,7 +225,7 @@ export default function ChatInput({
           aria-disabled={disabled}
           rows={5}
           // ponytail: theme is fixed dark — explicit classes, no ternary to fail on
-          className={`w-full resize-none border-none bg-onyx-600 p-2 text-bone caret-crimson placeholder:text-bone-500 focus:outline-none ${
+          className={`w-full resize-none border-none bg-onyx-600 p-2 text-[#FF7A1A] caret-[#FF7A1A] placeholder:text-[#B87A3A] focus:outline-none ${
             disabled ? 'cursor-not-allowed opacity-70' : ''
           }`}
           placeholder={attachedFiles.length > 0 ? 'Añade un mensaje (opcional)...' : t('chat_input_placeholder')}
