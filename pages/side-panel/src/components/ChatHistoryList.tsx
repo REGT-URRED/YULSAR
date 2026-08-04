@@ -35,12 +35,12 @@ const ChatHistoryList: React.FC<ChatHistoryListProps> = ({
 
   return (
     <div className="h-full overflow-y-auto p-4">
-      <h2 className={`mb-4 text-lg font-semibold ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>
+      <h2 className={`mb-4 text-lg font-semibold ${isDarkMode ? 'text-bone' : 'text-gray-800'}`}>
         {t('chat_history_title')}
       </h2>
       {sessions.length === 0 ? (
         <div
-          className={`rounded-lg ${isDarkMode ? 'bg-slate-800 text-gray-400' : 'bg-white/30 text-gray-500'} p-4 text-center backdrop-blur-sm`}>
+          className={`rounded-lg ${isDarkMode ? 'bg-onyx-600 text-bone-400' : 'bg-white/30 text-gray-500'} p-4 text-center backdrop-blur-sm`}>
           {t('chat_history_empty')}
         </div>
       ) : (
@@ -49,13 +49,13 @@ const ChatHistoryList: React.FC<ChatHistoryListProps> = ({
             <div
               key={session.id}
               className={`group relative rounded-lg ${
-                isDarkMode ? 'bg-slate-800 hover:bg-slate-700' : 'bg-white/50 hover:bg-white/70'
+                isDarkMode ? 'bg-onyx-600 hover:bg-onyx-700' : 'bg-white/50 hover:bg-white/70'
               } p-3 backdrop-blur-sm transition-all`}>
               <button onClick={() => onSessionSelect(session.id)} className="w-full text-left" type="button">
-                <h3 className={`text-sm font-medium ${isDarkMode ? 'text-gray-200' : 'text-gray-900'}`}>
+                <h3 className={`text-sm font-medium ${isDarkMode ? 'text-bone' : 'text-bone-900'}`}>
                   {session.title}
                 </h3>
-                <p className={`mt-1 text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                <p className={`mt-1 text-xs ${isDarkMode ? 'text-bone-400' : 'text-bone-500'}`}>
                   {formatDate(session.createdAt)}
                 </p>
               </button>

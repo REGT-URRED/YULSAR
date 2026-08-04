@@ -82,7 +82,7 @@ const BookmarkList: React.FC<BookmarkListProps> = ({
 
   return (
     <div className="p-2">
-      <h3 className={`mb-3 text-sm font-medium ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}>
+      <h3 className={`mb-3 text-sm font-medium ${isDarkMode ? 'text-bone' : 'text-bone-700'}`}>
         {t('chat_bookmarks_header')}
       </h3>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -95,8 +95,8 @@ const BookmarkList: React.FC<BookmarkListProps> = ({
             onDragOver={handleDragOver}
             onDrop={e => handleDrop(e, bookmark.id)}
             className={`group relative rounded-lg p-3 ${
-              isDarkMode ? 'bg-slate-800 hover:bg-slate-700' : 'bg-white hover:bg-sky-50'
-            } border ${isDarkMode ? 'border-slate-700' : 'border-sky-100'}`}>
+              isDarkMode ? 'bg-onyx-600 hover:bg-onyx-700' : 'bg-white hover:bg-sky-50'
+            } border ${isDarkMode ? 'border-onyx-600' : 'border-crimson-100'}`}>
             {editingId === bookmark.id ? (
               <div className="flex items-center">
                 <input
@@ -105,7 +105,7 @@ const BookmarkList: React.FC<BookmarkListProps> = ({
                   value={editTitle}
                   onChange={e => setEditTitle(e.target.value)}
                   className={`mr-2 grow rounded px-2 py-1 text-sm ${
-                    isDarkMode ? 'border-slate-600 bg-slate-700 text-gray-200' : 'border-sky-100 bg-white text-gray-700'
+                    isDarkMode ? 'border-onyx-600 bg-onyx-700 text-bone' : 'border-sky-100 bg-white text-gray-700'
                   } border`}
                 />
                 <button
@@ -144,7 +144,7 @@ const BookmarkList: React.FC<BookmarkListProps> = ({
                     }}
                     className="w-full text-left">
                     <div
-                      className={`truncate pr-10 text-sm font-medium ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}>
+                      className={`truncate pr-10 text-sm font-medium ${isDarkMode ? 'text-bone' : 'text-bone-700'}`}>
                       {bookmark.title}
                     </div>
                   </button>

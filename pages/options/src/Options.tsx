@@ -61,12 +61,12 @@ const Options = () => {
 
   return (
     <div
-      className={`flex min-h-screen min-w-[768px] ${isDarkMode ? 'bg-slate-900' : 'bg-slate-100'} ${isDarkMode ? 'text-gray-200' : 'text-gray-900'}`}>
+      className={`flex min-h-screen min-w-[768px] ${isDarkMode ? 'bg-onyx' : 'bg-slate-100'} ${isDarkMode ? 'text-bone' : 'text-bone-900'}`}>
       {/* Vertical Navigation Bar */}
       <nav
-        className={`w-48 border-r ${isDarkMode ? 'border-slate-700 bg-slate-800/80' : 'border-white/20 bg-[#0EA5E9]/10'} backdrop-blur-sm`}>
+        className={`w-48 border-r ${isDarkMode ? 'border-onyx-600 bg-onyx-600/80' : 'border-white/20 bg-[#B3122f]/10'} backdrop-blur-sm`}>
         <div className="p-4">
-          <h1 className={`mb-6 text-xl font-bold ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>
+          <h1 className={`mb-6 text-xl font-bold ${isDarkMode ? 'text-bone' : 'text-gray-800'}`}>
             {t('options_nav_header')}
           </h1>
           <ul className="space-y-2">
@@ -77,8 +77,8 @@ const Options = () => {
                   className={`flex w-full items-center space-x-2 rounded-lg px-4 py-2 text-left text-base 
                     ${
                       activeTab !== item.id
-                        ? `${isDarkMode ? 'bg-slate-700/70 text-gray-300 hover:text-white' : 'bg-[#0EA5E9]/15 font-medium text-gray-700 hover:text-white'} backdrop-blur-sm`
-                        : `${isDarkMode ? 'bg-sky-800/50' : ''} text-white backdrop-blur-sm`
+                          ? `${isDarkMode ? 'bg-onyx-700/70 text-bone-300 hover:text-bone' : 'bg-[#B3122f]/15 font-medium text-gray-700 hover:text-white'} backdrop-blur-sm`
+                        : `${isDarkMode ? 'bg-crimson-800/50' : ''} text-white backdrop-blur-sm`
                     }`}>
                   <item.icon className="h-4 w-4" />
                   <span>{item.label}</span>
@@ -90,7 +90,7 @@ const Options = () => {
       </nav>
 
       {/* Main Content Area */}
-      <main className={`flex-1 ${isDarkMode ? 'bg-slate-800/50' : 'bg-white/10'} p-8 backdrop-blur-sm`}>
+      <main className={`flex-1 ${isDarkMode ? 'bg-onyx-600/50' : 'bg-white/10'} p-8 backdrop-blur-sm`}>
         <div className="mx-auto min-w-[512px] max-w-screen-lg">{renderTabContent()}</div>
       </main>
     </div>

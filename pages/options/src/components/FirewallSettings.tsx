@@ -56,8 +56,8 @@ export const FirewallSettings = ({ isDarkMode }: FirewallSettingsProps) => {
   return (
     <section className="space-y-6">
       <div
-        className={`rounded-lg border ${isDarkMode ? 'border-slate-700 bg-slate-800' : 'border-blue-100 bg-gray-50'} p-6 text-left shadow-sm`}>
-        <h2 className={`mb-4 text-xl font-semibold ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>
+        className={`rounded-lg border ${isDarkMode ? 'border-onyx-600 bg-onyx-600' : 'border-crimson-100 bg-gray-50'} p-6 text-left shadow-sm`}>
+        <h2 className={`mb-4 text-xl font-semibold ${isDarkMode ? 'text-bone' : 'text-gray-800'}`}>
           {t('options_firewall_header')}
         </h2>
 
@@ -67,7 +67,7 @@ export const FirewallSettings = ({ isDarkMode }: FirewallSettingsProps) => {
             <div className="flex items-center justify-between">
               <label
                 htmlFor="toggle-firewall"
-                className={`text-base font-medium ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}>
+                className={`text-base font-medium ${isDarkMode ? 'text-bone' : 'text-bone-700'}`}>
                 {t('options_firewall_enableToggle')}
               </label>
               <div className="relative inline-block w-12 select-none">
@@ -81,7 +81,7 @@ export const FirewallSettings = ({ isDarkMode }: FirewallSettingsProps) => {
                 <label
                   htmlFor="toggle-firewall"
                   className={`block h-6 cursor-pointer overflow-hidden rounded-full ${
-                    isEnabled ? 'bg-blue-500' : isDarkMode ? 'bg-gray-600' : 'bg-gray-300'
+                    isEnabled ? 'bg-blue-500' : isDarkMode ? 'bg-onyx-500' : 'bg-gray-300'
                   }`}>
                   <span className="sr-only">{t('options_firewall_toggleFirewall_a11y')}</span>
                   <span
@@ -144,7 +144,7 @@ export const FirewallSettings = ({ isDarkMode }: FirewallSettingsProps) => {
             <Button
               onClick={handleAddUrl}
               className={`px-4 py-2 text-sm ${
-                isDarkMode ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-green-500 text-white hover:bg-green-600'
+                isDarkMode ? 'bg-crimson-700 text-white hover:bg-crimson-800' : 'bg-crimson text-white hover:bg-crimson-600'
               }`}>
               {t('options_firewall_btnAdd')}
             </Button>
@@ -158,9 +158,9 @@ export const FirewallSettings = ({ isDarkMode }: FirewallSettingsProps) => {
                     <li
                       key={url}
                       className={`flex items-center justify-between rounded-md p-2 pr-0 ${
-                        isDarkMode ? 'bg-slate-700' : 'bg-gray-100'
+                        isDarkMode ? 'bg-onyx-700' : 'bg-gray-100'
                       }`}>
-                      <span className={`text-sm ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}>{url}</span>
+                      <span className={`text-sm ${isDarkMode ? 'text-bone' : 'text-bone-700'}`}>{url}</span>
                       <Button
                         onClick={() => handleRemoveUrl(url, 'allow')}
                         className={`rounded-l-none px-2 py-1 text-xs ${
@@ -174,7 +174,7 @@ export const FirewallSettings = ({ isDarkMode }: FirewallSettingsProps) => {
                   ))}
                 </ul>
               ) : (
-                <p className={`text-center text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                <p className={`text-center text-sm ${isDarkMode ? 'text-bone-400' : 'text-bone-500'}`}>
                   {t('options_firewall_allowList_empty')}
                 </p>
               )
@@ -184,13 +184,13 @@ export const FirewallSettings = ({ isDarkMode }: FirewallSettingsProps) => {
                   <li
                     key={url}
                     className={`flex items-center justify-between rounded-md p-2 pr-0 ${
-                      isDarkMode ? 'bg-slate-700' : 'bg-gray-100'
+                      isDarkMode ? 'bg-onyx-700' : 'bg-gray-100'
                     }`}>
-                    <span className={`text-sm ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}>{url}</span>
+                    <span className={`text-sm ${isDarkMode ? 'text-bone' : 'text-bone-700'}`}>{url}</span>
                     <Button
                       onClick={() => handleRemoveUrl(url, 'deny')}
                       className={`rounded-l-none px-2 py-1 text-xs ${
-                        isDarkMode ? 'bg-red-600 text-white hover:bg-red-700' : 'bg-red-500 text-white hover:bg-red-600'
+                        isDarkMode ? 'bg-crimson text-white hover:bg-red-700' : 'bg-red-500 text-white hover:bg-red-600'
                       }`}>
                       Remove
                     </Button>
@@ -198,7 +198,7 @@ export const FirewallSettings = ({ isDarkMode }: FirewallSettingsProps) => {
                 ))}
               </ul>
             ) : (
-              <p className={`text-center text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+              <p className={`text-center text-sm ${isDarkMode ? 'text-bone-400' : 'text-bone-500'}`}>
                 {t('options_firewall_denyList_empty')}
               </p>
             )}
@@ -207,11 +207,11 @@ export const FirewallSettings = ({ isDarkMode }: FirewallSettingsProps) => {
       </div>
 
       <div
-        className={`rounded-lg border ${isDarkMode ? 'border-slate-700 bg-slate-800' : 'border-blue-100 bg-gray-50'} p-6 text-left shadow-sm`}>
-        <h2 className={`mb-4 text-xl font-semibold ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>
+        className={`rounded-lg border ${isDarkMode ? 'border-onyx-600 bg-onyx-600' : 'border-crimson-100 bg-gray-50'} p-6 text-left shadow-sm`}>
+        <h2 className={`mb-4 text-xl font-semibold ${isDarkMode ? 'text-bone' : 'text-gray-800'}`}>
           {t('options_firewall_howItWorks_header')}
         </h2>
-        <ul className={`list-disc space-y-2 pl-5 text-left text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+        <ul className={`list-disc space-y-2 pl-5 text-left text-sm ${isDarkMode ? 'text-bone-300' : 'text-bone-600'}`}>
           {t('options_firewall_howItWorks')
             .split('\n')
             .map((rule, index) => (
