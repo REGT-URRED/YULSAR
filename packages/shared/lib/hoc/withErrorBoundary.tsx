@@ -8,12 +8,13 @@ class ErrorBoundary extends Component<
   },
   {
     hasError: boolean;
+    errorMessage: string;
   }
 > {
-  state = { hasError: false };
+  state = { hasError: false, errorMessage: '' };
 
-  static getDerivedStateFromError() {
-    return { hasError: true };
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, errorMessage: error.message };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
@@ -22,7 +23,25 @@ class ErrorBoundary extends Component<
 
   render() {
     if (this.state.hasError) {
-      return this.props.fallback;
+      // ponytail: show the real error so issues are diagnosable without the console
+      return (
+        <>
+          {this.props.fallback}
+          <pre
+            style={{
+              margin: '8px',
+              padding: '8px',
+              fontSize: '12px',
+              whiteSpace: 'pre-wrap',
+              wordBreak: 'break-all',
+              background: 'rgba(159, 6, 11, 0.1)',
+              color: 'inherit',
+              borderRadius: '4px',
+            }}>
+            {this.state.errorMessage || 'Unknown error (check console)'}
+          </pre>
+        </>
+      );
     }
 
     return this.props.children;

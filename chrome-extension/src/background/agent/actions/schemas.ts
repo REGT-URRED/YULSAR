@@ -213,3 +213,18 @@ export const waitActionSchema: ActionSchema = {
     seconds: z.number().int().default(3).describe('amount of seconds'),
   }),
 };
+
+// ponytail: screenshot-to-code style tool — generate code from the current page screenshot
+export const generateCodeFromScreenshotActionSchema: ActionSchema = {
+  name: 'generate_code_from_screenshot',
+  description:
+    'Capture a screenshot of the current page and generate code (HTML/Tailwind by default) that reproduces it. Use when the user asks to generate code from the current page, clone a page, or convert a website to code.',
+  schema: z.object({
+    intent: z.string().default('').describe('purpose of this action'),
+    tech_stack: z
+      .string()
+      .default('HTML + Tailwind')
+      .describe('tech stack for the generated code, e.g. "HTML + Tailwind", "React + Tailwind", "HTML + CSS"'),
+    instructions: z.string().default('').describe('additional instructions for the generated code'),
+  }),
+};

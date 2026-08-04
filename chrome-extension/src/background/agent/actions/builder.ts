@@ -22,11 +22,13 @@ import {
   nextPageActionSchema,
   scrollToTopActionSchema,
   scrollToBottomActionSchema,
+  generateCodeFromScreenshotActionSchema,
 } from './schemas';
 import { z } from 'zod';
 import { createLogger } from '@src/background/log';
 import { ExecutionState, Actors } from '../event/types';
 import type { BaseChatModel } from '@langchain/core/language_models/chat_models';
+import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 import { wrapUntrustedContent } from '../messages/utils';
 
 const logger = createLogger('Action');
@@ -702,6 +704,55 @@ export class ActionBuilder {
     );
     actions.push(selectDropdownOption);
 
+    // ponytail: screenshot-to-code style — generate code from current page
+    const generateCode = new Action(
+      async (input: z.infer<typeof generateCodeFromScreenshotActionSchema.schema>) => {
+        const intent = input.intent || 'generate code from current page screenshot';
+        this.context.emitEvent(Actors.NAVIGATOR, ExecutionState.ACT_START, intent);
+        try {
+          const page = await this.context.browserContext.getCurrentPage();
+          const screenshot = await page.takeScreenshot();
+
+          const systemMsg = new SystemMessage(CODEGEN_SYSTEM_PROMPT);
+          const humanMsg = new HumanMessage({
+            content: [
+              {
+                type: 'text',
+                text: `Tech stack: ${input.tech_stack}\nInstructions: ${input.instructions || 'Reproduce this page as accurately as possible.'}`,
+              },
+              { type: 'image_url', image_url: { url: `data:image/jpeg;base64,${screenshot}` } },
+            ],
+          });
+
+          const response = await this.extractorLLM.invoke([systemMsg, humanMsg]);
+          const code = typeof response.content === 'string' ? response.content : JSON.stringify(response.content);
+
+          this.context.emitEvent(Actors.NAVIGATOR, ExecutionState.ACT_OK, 'Code generated');
+          return new ActionResult({
+            extractedContent: code,
+            includeInMemory: true,
+          });
+        } catch (error) {
+          const errorMsg = `Failed to generate code: ${error instanceof Error ? error.message : String(error)}`;
+          this.context.emitEvent(Actors.NAVIGATOR, ExecutionState.ACT_FAIL, errorMsg);
+          return new ActionResult({ error: errorMsg, includeInMemory: true });
+        }
+      },
+      generateCodeFromScreenshotActionSchema,
+    );
+    actions.push(generateCode);
+
     return actions;
   }
 }
+
+// ponytail: adapted from screenshot-to-code prompt style — extract text verbatim, use image colors, no external deps
+const CODEGEN_SYSTEM_PROMPT = `You are an expert frontend developer. Convert the provided screenshot into clean, production-ready code.
+
+Rules:
+1. Extract ALL text from the image verbatim — spelling, numbers, and layout must match.
+2. Use the exact colors visible in the image; pick sensible neutrals for anything ambiguous.
+3. Write self-contained HTML with Tailwind utility classes (via the Tailwind CDN script tag). No external images, no external fonts, no frameworks unless asked.
+4. Preserve the overall layout: spacing, alignment, typography scale, and proportions.
+5. Make it responsive with reasonable breakpoints.
+6. Do not include any commentary outside the code. Output only the code.`;
