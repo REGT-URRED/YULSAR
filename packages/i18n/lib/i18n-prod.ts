@@ -12,11 +12,12 @@ function applySubstitutions(
 ): string {
   let out = raw;
   // named placeholders mapped via content ("$1" -> first arg)
+  // chrome.i18n references are case-insensitive: key "error_message" <-> "$ERROR_MESSAGE$"
   if (placeholders) {
     for (const [name, ph] of Object.entries(placeholders)) {
       const idx = Number(ph.content?.replace('$', '')) - 1;
       if (!Number.isNaN(idx) && subs[idx] !== undefined) {
-        out = out.split(`$${name}$`).join(subs[idx]!);
+        out = out.replace(new RegExp(`\\$${name}\\$`, 'gi'), subs[idx]!);
       }
     }
   }
