@@ -733,7 +733,13 @@ export class ActionBuilder {
             includeInMemory: true,
           });
         } catch (error) {
-          const errorMsg = `Failed to generate code: ${error instanceof Error ? error.message : String(error)}`;
+          const raw = error instanceof Error ? error.message : String(error);
+          // ponytail: common failure — text-only model can't see the screenshot
+          const looksLikeVisionError =
+            /400|image|vision|content.*type|unsupported.*media/i.test(raw) || /does not support.*image/i.test(raw);
+          const errorMsg = looksLikeVisionError
+            ? `El modelo configurado no soporta imagenes. Usa un modelo con vision (ej. Gemini) para generar codigo. Detalle: ${raw.slice(0, 200)}`
+            : `Failed to generate code: ${raw}`;
           this.context.emitEvent(Actors.NAVIGATOR, ExecutionState.ACT_FAIL, errorMsg);
           return new ActionResult({ error: errorMsg, includeInMemory: true });
         }

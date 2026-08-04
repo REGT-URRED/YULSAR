@@ -321,7 +321,7 @@ export const ModelSettings = ({ isDarkMode = false }: ModelSettingsProps) => {
     try {
       const result = await fetchModels(config.type!, config.apiKey, config.baseUrl);
       if (result.error) {
-        setFetchErrors(prev => ({ ...prev, [providerId]: result.error }));
+        setFetchErrors(prev => ({ ...prev, [providerId]: result.error! }));
         return;
       }
       // ponytail: replace modelNames in provider with fetched list
@@ -427,6 +427,10 @@ export const ModelSettings = ({ isDarkMode = false }: ModelSettingsProps) => {
 
     // ponytail: only CustomOpenAI, Ollama, and AzureOpenAI need explicit baseUrl
     // all other built-in providers have defaults — API key is enough
+    let hasInput = false;
+    const providerType = providers[provider]?.type;
+    const config = providers[provider];
+
     if (providerType === ProviderTypeEnum.CustomOpenAI) {
       hasInput = Boolean(config?.baseUrl?.trim()); // Custom needs Base URL
     } else if (providerType === ProviderTypeEnum.Ollama) {

@@ -18,10 +18,12 @@ class ChatLlama extends ChatOpenAI {
   }
 
   // Override the completionWithRetry method to intercept and transform the response
+  // ponytail: super.completionWithRetry no longer exists in current @langchain/openai — call the client directly
   async completionWithRetry(request: any, options?: any): Promise<any> {
     try {
-      // Make the request using the parent's implementation
-      const response = await super.completionWithRetry(request, options);
+      // Make the request using the underlying OpenAI client
+      // ponytail: Llama API returns a proprietary format, treat response as untyped
+      const response: any = await this.client.chat.completions.create(request);
 
       // Check if this is a Llama API response format
       if (response?.completion_message?.content?.text) {
@@ -284,11 +286,12 @@ export function createChatModel(providerConfig: ProviderConfig, modelConfig: Mod
         temperature,
         topP,
       };
-      // ponytail: reasoningEffort → DeepSeek thinking mode (on for medium/high, off otherwise)
-      if (modelConfig.reasoningEffort) {
+      // ponytail: reasoningEffort → DeepSeek thinking mode, only for models that support it
+      // deepseek-chat (V3) rejects the thinking param with 400
+      const supportsThinking = /deepseek-v4|deepseek-reasoner/.test(modelConfig.modelName);
+      if (modelConfig.reasoningEffort && supportsThinking) {
         const thinkingEnabled = modelConfig.reasoningEffort === 'medium' || modelConfig.reasoningEffort === 'high';
         args.modelKwargs = {
-          // DeepSeek passes extra_body.thinking to control reasoning/thinking mode
           extra_body: {
             thinking: { type: thinkingEnabled ? 'enabled' : 'disabled' },
           },
