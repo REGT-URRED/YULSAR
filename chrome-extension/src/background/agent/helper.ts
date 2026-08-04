@@ -286,15 +286,14 @@ export function createChatModel(providerConfig: ProviderConfig, modelConfig: Mod
         temperature,
         topP,
       };
-      // ponytail: reasoningEffort → DeepSeek thinking mode, only for models that support it
-      // deepseek-chat (V3) rejects the thinking param with 400
-      const supportsThinking = /deepseek-v4|deepseek-reasoner/.test(modelConfig.modelName);
-      if (modelConfig.reasoningEffort && supportsThinking) {
+      // ponytail: DeepSeek V4 defaults to thinking mode, which rejects forced tool_choice with 400.
+      // modelKwargs is spread directly into the request body, so `thinking` must be top-level (not extra_body).
+      // Always disable thinking for v4 unless reasoningEffort is medium/high.
+      const isV4 = modelConfig.modelName.startsWith('deepseek-v4');
+      if (isV4) {
         const thinkingEnabled = modelConfig.reasoningEffort === 'medium' || modelConfig.reasoningEffort === 'high';
         args.modelKwargs = {
-          extra_body: {
-            thinking: { type: thinkingEnabled ? 'enabled' : 'disabled' },
-          },
+          thinking: { type: thinkingEnabled ? 'enabled' : 'disabled' },
         };
       }
       return new ChatDeepSeek(args) as BaseChatModel;
