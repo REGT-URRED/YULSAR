@@ -1,56 +1,32 @@
-/* Add this at the top of the file */
+/* YULSAR — dark theme is fixed; no prefers-color-scheme media queries anywhere */
 body {
+  background: #16141a; /* onyx */
   border-color: rgb(159, 6, 11) !important; /* crimson-700 */
 }
 
-/* Remove unused classes: .App, .App-logo, .App-header */
-
 code {
-  background: rgba(186, 230, 253, 0.4);
+  background: rgba(179, 18, 47, 0.15); /* crimson tint */
   border-radius: 0.25rem;
   padding: 0.2rem 0.5rem;
-  color: #0369a1;
+  color: #eb5d72; /* crimson-300 */
 }
 
-/* Dark mode support for code */
-@media (prefers-color-scheme: dark) {
-  code {
-    background: rgba(30, 58, 138, 0.4);
-    color: #7dd3fc;
-  }
-}
-
-/* Scrollbar styles */
+/* Scrollbar styles — always dark */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #221f28; /* onyx-600 */
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #0ea5e9;
+  background: #b3122f; /* crimson */
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #0284c7;
-}
-
-/* Dark mode scrollbar */
-@media (prefers-color-scheme: dark) {
-  ::-webkit-scrollbar-track {
-    background: #1e293b;
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background: #0ea5e9;
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    background: #38bdf8;
-  }
+  background: #d63850; /* crimson-400 */
 }
 
 /* Used classes from the component */
@@ -60,14 +36,7 @@ code {
   align-items: center;
   padding: 0.75rem;
   background-color: transparent;
-  border-bottom: 1px solid rgba(14, 165, 233, 0.2);
-}
-
-/* Dark mode header border */
-@media (prefers-color-scheme: dark) {
-  .header {
-    border-bottom: 1px solid rgba(14, 165, 233, 0.3);
-  }
+  border-bottom: 1px solid rgba(179, 18, 47, 0.35);
 }
 
 .header-logo {
@@ -82,31 +51,31 @@ code {
 }
 
 .header-icon {
-  color: #19C2FF;
+  color: #eb5d72; /* crimson-300 */
   cursor: pointer;
   transition: color 0.2s ease;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 .header-icon:hover {
-  color: #0073DC;
+  color: #b3122f; /* crimson */
   opacity: 1;
 }
 
 .send-button {
-  color: #19C2FF;
+  color: #eb5d72;
   cursor: pointer;
   transition: color 0.2s ease;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 .send-button:hover {
-  color: #0073DC;
+  color: #b3122f;
   opacity: 1;
 }
 
 .send-button:disabled {
-  color: #CBD5E1;
+  color: #37333d; /* onyx-500 */
   cursor: not-allowed;
   opacity: 0.5;
 }
@@ -122,44 +91,14 @@ code {
 }
 
 .scrollbar-gutter-stable::-webkit-scrollbar-track {
-  background: #D8D2C4;  /* bone-300 */
+  background: #221f28; /* onyx-600 */
 }
 
 .scrollbar-gutter-stable::-webkit-scrollbar-thumb {
-  background: #EB5D72;  /* crimson-300 */
+  background: #b3122f; /* crimson */
   border-radius: 4px;
 }
 
 .scrollbar-gutter-stable::-webkit-scrollbar-thumb:hover {
-  background: #D63850;  /* crimson-400 */
-}
-
-/* Dark mode scrollbar for scrollbar-gutter-stable */
-@media (prefers-color-scheme: dark) {
-  .scrollbar-gutter-stable::-webkit-scrollbar-track {
-    background: #221F28;  /* onyx-600 */
-  }
-  
-  .scrollbar-gutter-stable::-webkit-scrollbar-thumb {
-    background: #B3122F;  /* crimson */
-  }
-  
-  .scrollbar-gutter-stable::-webkit-scrollbar-thumb:hover {
-    background: #D63850;  /* crimson-400 */
-  }
-}
-
-/* Dark mode text and background colors */
-@media (prefers-color-scheme: dark) {
-  .dark-mode-text {
-    color: #F4F0E6 !important; /* bone */
-  }
-  
-  .dark-mode-bg {
-    background-color: #221F28 !important; /* onyx-600 */
-  }
-  
-  .dark-mode-border {
-    border-color: #37333D !important; /* onyx-500 */
-  }
+  background: #d63850; /* crimson-400 */
 }
