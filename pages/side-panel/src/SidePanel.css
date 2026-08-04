@@ -1,6 +1,7 @@
 /* YULSAR — dark theme is fixed; no prefers-color-scheme media queries anywhere */
 body {
   background: #16141a; /* onyx */
+  color: #f4f0e6; /* bone — base text color, nothing invisible */
   border-color: rgb(159, 6, 11) !important; /* crimson-700 */
 }
 
