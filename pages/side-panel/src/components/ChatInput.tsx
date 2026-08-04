@@ -185,7 +185,7 @@ export default function ChatInput({
   return (
     <form
       onSubmit={handleSubmit}
-      className={`overflow-hidden rounded-lg border transition-colors ${disabled ? 'cursor-not-allowed' : 'focus-within:border-crimson-400 hover:border-crimson-400'} ${isDarkMode ? 'border-onyx-600' : ''}`}
+      className={`overflow-hidden rounded-lg border border-onyx-600 transition-colors ${disabled ? 'cursor-not-allowed' : 'focus-within:border-crimson-400 hover:border-crimson-400'}`}
       aria-label={t('chat_input_form')}>
       <div className="flex flex-col">
         {/* File attachments display */}
@@ -224,23 +224,15 @@ export default function ChatInput({
           disabled={disabled}
           aria-disabled={disabled}
           rows={5}
-          className={`w-full resize-none border-none p-2 focus:outline-none ${
-            disabled
-              ? isDarkMode
-                ? 'cursor-not-allowed bg-onyx-700 text-bone-400'
-                : 'cursor-not-allowed bg-gray-100 text-gray-500'
-              : isDarkMode
-                ? 'bg-onyx-600 text-bone'
-                : 'bg-white'
+          // ponytail: theme is fixed dark — explicit classes, no ternary to fail on
+          className={`w-full resize-none border-none bg-onyx-600 p-2 text-bone caret-crimson placeholder:text-bone-500 focus:outline-none ${
+            disabled ? 'cursor-not-allowed opacity-70' : ''
           }`}
           placeholder={attachedFiles.length > 0 ? 'Añade un mensaje (opcional)...' : t('chat_input_placeholder')}
           aria-label={t('chat_input_editor')}
         />
 
-        <div
-          className={`flex items-center justify-between px-2 py-1.5 ${
-            disabled ? (isDarkMode ? 'bg-onyx-600' : 'bg-gray-100') : isDarkMode ? 'bg-onyx-600' : 'bg-white'
-          }`}>
+        <div className="flex items-center justify-between bg-onyx-600 px-2 py-1.5">
           <div className="flex gap-2 text-gray-500">
             {/* File attachment button */}
             <button
